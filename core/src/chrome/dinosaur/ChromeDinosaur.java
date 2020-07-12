@@ -9,12 +9,16 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import chrome.dinosaur.component.DaggerGameComponent;
 import chrome.dinosaur.component.GameComponent;
+import dagger.Lazy;
 
 public class ChromeDinosaur extends Game {
 
 	@Inject
 	AssetManager assetManager;
 
+	@Inject
+	Lazy<SpriteBatch> lazyBatch;
+	
 	private GameComponent gameComponent;
 
 	public ChromeDinosaur() {
@@ -27,18 +31,13 @@ public class ChromeDinosaur extends Game {
 		assetManager.load("sprite.atlas", TextureAtlas.class);
 		assetManager.finishLoading();
 
-		screen = new GameStart();
-		gameComponent.injectGameStart((GameStart) screen);
+		setScreen(gameComponent.injectGameStart(new GameStart()));
 	}
 
 	@Override
-	public void render() {
-		super.render();
-	}
-	
-	@Override
-	public void dispose () {
+	public void dispose() {
 		screen.dispose();
 		assetManager.dispose();
+		lazyBatch.get().dispose();
 	}
 }
