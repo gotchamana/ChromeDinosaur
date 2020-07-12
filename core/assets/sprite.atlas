@@ -1,0 +1,300 @@
+
+sprite.png
+size: 1024,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bird_wing_down
+  rotate: false
+  xy: 924, 423
+  size: 92, 80
+  orig: 92, 80
+  offset: 0, 0
+  index: -1
+bird_wing_up
+  rotate: false
+  xy: 246, 220
+  size: 92, 80
+  orig: 92, 80
+  offset: 0, 0
+  index: -1
+cloud
+  rotate: false
+  xy: 924, 394
+  size: 92, 27
+  orig: 92, 27
+  offset: 0, 0
+  index: -1
+crouch_walk_dino1
+  rotate: false
+  xy: 804, 443
+  size: 118, 60
+  orig: 118, 60
+  offset: 0, 0
+  index: -1
+crouch_walk_dino2
+  rotate: false
+  xy: 804, 381
+  size: 118, 60
+  orig: 118, 60
+  offset: 0, 0
+  index: -1
+eight_digit
+  rotate: false
+  xy: 385, 398
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
+five_digit
+  rotate: false
+  xy: 174, 115
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
+floor1
+  rotate: false
+  xy: 2, 477
+  size: 800, 26
+  orig: 800, 26
+  offset: 0, 0
+  index: -1
+floor2
+  rotate: false
+  xy: 2, 449
+  size: 800, 26
+  orig: 800, 26
+  offset: 0, 0
+  index: -1
+floor3
+  rotate: false
+  xy: 2, 421
+  size: 800, 26
+  orig: 800, 26
+  offset: 0, 0
+  index: -1
+four_digit
+  rotate: false
+  xy: 418, 332
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
+game_over
+  rotate: false
+  xy: 2, 398
+  size: 381, 21
+  orig: 381, 21
+  offset: 0, 0
+  index: -1
+high_score
+  rotate: false
+  xy: 92, 17
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1
+jump_dino
+  rotate: false
+  xy: 154, 302
+  size: 88, 94
+  orig: 88, 94
+  offset: 0, 0
+  index: -1
+large_cactus_four
+  rotate: false
+  xy: 2, 296
+  size: 150, 100
+  orig: 150, 100
+  offset: 0, 0
+  index: -1
+large_cactus_one
+  rotate: false
+  xy: 104, 194
+  size: 50, 100
+  orig: 50, 100
+  offset: 0, 0
+  index: -1
+large_cactus_two
+  rotate: false
+  xy: 2, 194
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+moon1
+  rotate: false
+  xy: 334, 316
+  size: 40, 80
+  orig: 40, 80
+  offset: 0, 0
+  index: -1
+moon2
+  rotate: false
+  xy: 340, 234
+  size: 40, 80
+  orig: 40, 80
+  offset: 0, 0
+  index: -1
+moon3
+  rotate: false
+  xy: 196, 56
+  size: 40, 80
+  orig: 40, 80
+  offset: 0, 0
+  index: -1
+moon4
+  rotate: false
+  xy: 92, 112
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+moon5
+  rotate: false
+  xy: 376, 316
+  size: 40, 80
+  orig: 40, 80
+  offset: 0, 0
+  index: -1
+moon6
+  rotate: false
+  xy: 382, 234
+  size: 40, 80
+  orig: 40, 80
+  offset: 0, 0
+  index: -1
+moon7
+  rotate: false
+  xy: 492, 339
+  size: 40, 80
+  orig: 40, 80
+  offset: 0, 0
+  index: -1
+nine_digit
+  rotate: false
+  xy: 570, 398
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
+one_digit
+  rotate: false
+  xy: 132, 17
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
+restart_button
+  rotate: false
+  xy: 418, 355
+  size: 72, 64
+  orig: 72, 64
+  offset: 0, 0
+  index: -1
+seven_digit
+  rotate: false
+  xy: 438, 332
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
+shock_dino
+  rotate: false
+  xy: 2, 98
+  size: 88, 94
+  orig: 88, 94
+  offset: 0, 0
+  index: -1
+six_digit
+  rotate: false
+  xy: 570, 375
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
+small_cactus_one
+  rotate: false
+  xy: 534, 349
+  size: 34, 70
+  orig: 34, 70
+  offset: 0, 0
+  index: -1
+small_cactus_three
+  rotate: false
+  xy: 92, 40
+  size: 102, 70
+  orig: 102, 70
+  offset: 0, 0
+  index: -1
+small_cactus_two
+  rotate: false
+  xy: 174, 138
+  size: 68, 70
+  orig: 68, 70
+  offset: 0, 0
+  index: -1
+star1
+  rotate: false
+  xy: 570, 355
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+star2
+  rotate: false
+  xy: 590, 378
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+star3
+  rotate: false
+  xy: 610, 401
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+three_digit
+  rotate: false
+  xy: 590, 398
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
+title_dino
+  rotate: false
+  xy: 156, 210
+  size: 88, 90
+  orig: 88, 90
+  offset: 0, 0
+  index: -1
+two_digit
+  rotate: false
+  xy: 152, 17
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
+walk_dino1
+  rotate: false
+  xy: 244, 302
+  size: 88, 94
+  orig: 88, 94
+  offset: 0, 0
+  index: -1
+walk_dino2
+  rotate: false
+  xy: 2, 2
+  size: 88, 94
+  orig: 88, 94
+  offset: 0, 0
+  index: -1
+zero_digit
+  rotate: false
+  xy: 458, 332
+  size: 18, 21
+  orig: 18, 21
+  offset: 0, 0
+  index: -1
