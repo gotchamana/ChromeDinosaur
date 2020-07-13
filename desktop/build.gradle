@@ -1,5 +1,3 @@
-apply plugin: "java"
-
 sourceCompatibility = 11
 sourceSets.main.java.srcDirs = [ "src/" ]
 
@@ -12,6 +10,7 @@ task run(dependsOn: classes, type: JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
+    jvmArgs "--illegal-access=deny"
 }
 
 task debug(dependsOn: classes, type: JavaExec) {

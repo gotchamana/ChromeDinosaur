@@ -7,8 +7,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-import chrome.dinosaur.component.DaggerGameComponent;
-import chrome.dinosaur.component.GameComponent;
+import chrome.dinosaur.di.component.DaggerGameComponent;
+import chrome.dinosaur.di.component.GameComponent;
+import chrome.dinosaur.gamestate.GameStart;
 import dagger.Lazy;
 
 public class ChromeDinosaur extends Game {

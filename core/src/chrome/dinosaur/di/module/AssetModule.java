@@ -1,4 +1,4 @@
-package chrome.dinosaur.module;
+package chrome.dinosaur.di.module;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Sprite;

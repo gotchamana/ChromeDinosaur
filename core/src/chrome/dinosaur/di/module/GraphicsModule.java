@@ -1,4 +1,4 @@
-package chrome.dinosaur.module;
+package chrome.dinosaur.di.module;
 
 import javax.inject.Singleton;
 

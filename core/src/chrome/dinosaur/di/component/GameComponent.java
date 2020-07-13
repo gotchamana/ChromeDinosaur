@@ -1,11 +1,11 @@
-package chrome.dinosaur.component;
+package chrome.dinosaur.di.component;
 
 import javax.inject.Singleton;
 
 import chrome.dinosaur.ChromeDinosaur;
-import chrome.dinosaur.GameStart;
-import chrome.dinosaur.module.AssetModule;
-import chrome.dinosaur.module.GraphicsModule;
+import chrome.dinosaur.di.module.AssetModule;
+import chrome.dinosaur.di.module.GraphicsModule;
+import chrome.dinosaur.gamestate.GameStart;
 import dagger.Component;
 
 @Singleton
