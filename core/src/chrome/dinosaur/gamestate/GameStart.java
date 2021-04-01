@@ -2,17 +2,16 @@ package chrome.dinosaur.gamestate;
 
 import javax.inject.Inject;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.ashley.core.*;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import chrome.dinosaur.ecs.component.*;
 
 public class GameStart extends GameState {
 
     @Inject
-    Sprite titleDino;
+    Engine engine;
     
     @Inject
     SpriteBatch batch;
@@ -20,27 +19,44 @@ public class GameStart extends GameState {
     @Inject
     Viewport viewport;
     
-    private void update(float delta) {
-        batch.setTransformMatrix(viewport.getCamera().view);
-        batch.setProjectionMatrix(viewport.getCamera().projection);
+    @Inject
+    TextureRegion titleDino;
+    
+    @Inject
+    ComponentMapper<GameStateFinishedComponent> gameStateFinishedMapper;
+    
+    @Inject
+    public GameStart() {}
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            Gdx.app.log("INFO", delta + ": Press UP");
-        }
+    @Override
+    public void show() {
+        Entity dino = new Entity()
+            .add(new PositionComponent(0, 0))
+            .add(new VelocityComponent(0, 0))
+            .add(new PlayerComponent(false))
+            .add(new TextureRegionComponent(titleDino));
 
-        titleDino.setPosition(0, 0);
+        Entity gameStateFinished = new Entity()
+            .add(new GameStateFinishedComponent(onFinished, false));
+
+        engine.addEntity(dino);
+        engine.addEntity(gameStateFinished);
+    }
+    
+    @Override
+    public void hide() {
+        engine.removeAllEntities();
     }
     
     @Override
     public void render(float delta) {
-        update(delta);
+        update();
+        engine.update(delta);
+    }
 
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.begin();
-        titleDino.draw(batch);
-		batch.end();
+    private void update() {
+        batch.setTransformMatrix(viewport.getCamera().view);
+        batch.setProjectionMatrix(viewport.getCamera().projection);
     }
 
     @Override

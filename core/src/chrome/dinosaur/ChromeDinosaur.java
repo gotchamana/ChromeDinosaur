@@ -5,12 +5,9 @@ import javax.inject.Inject;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import chrome.dinosaur.di.component.DaggerGameComponent;
-import chrome.dinosaur.di.component.GameComponent;
-import chrome.dinosaur.gamestate.GameStart;
-import dagger.Lazy;
+import chrome.dinosaur.gamestate.*;
 
 public class ChromeDinosaur extends Game {
 
@@ -18,27 +15,26 @@ public class ChromeDinosaur extends Game {
 	AssetManager assetManager;
 
 	@Inject
-	Lazy<SpriteBatch> lazyBatch;
+	SpriteBatch batch;
 	
-	private GameComponent gameComponent;
+	@Inject
+	GameStart gameStart;
 
-	public ChromeDinosaur() {
-		gameComponent = DaggerGameComponent.create();
-		gameComponent.injectChromeDinosaur(this);
-	}
-	
+	@Inject
+	GameRun gameRun;
+
 	@Override
 	public void create() {
-		assetManager.load("sprite.atlas", TextureAtlas.class);
-		assetManager.finishLoading();
+		DaggerGameComponent.create().chromeDinosaur(this);
 
-		setScreen(gameComponent.injectGameStart(new GameStart()));
+		gameStart.setOnFinished(() -> setScreen(gameRun));
+		setScreen(gameStart);
 	}
 
 	@Override
 	public void dispose() {
 		screen.dispose();
 		assetManager.dispose();
-		lazyBatch.get().dispose();
+		batch.dispose();
 	}
 }

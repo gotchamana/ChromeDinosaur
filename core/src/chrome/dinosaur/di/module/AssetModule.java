@@ -1,17 +1,30 @@
 package chrome.dinosaur.di.module;
 
+import javax.inject.Singleton;
+
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.*;
 
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = AssetManagerModule.class)
+@Module
 public class AssetModule {
     
+    private AssetModule() {}
+
     @Provides
-    public Sprite titleDino(AssetManager manager) {
-        return manager.get("sprite.atlas", TextureAtlas.class).createSprite("title_dino");
+    @Singleton
+    public static AssetManager provideAssetManager() {
+        var assetManager = new AssetManager();
+        assetManager.load("sprite.atlas", TextureAtlas.class);
+        assetManager.finishLoading();
+
+        return assetManager;
+    }
+
+    @Provides
+    public static TextureRegion provideTitleDino(AssetManager manager) {
+        return manager.get("sprite.atlas", TextureAtlas.class).findRegion("title_dino");
     }
 }
