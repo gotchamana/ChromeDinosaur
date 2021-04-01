@@ -9,5 +9,4 @@ import lombok.Data;
 @AllArgsConstructor
 public class JumpComponent implements Component {
     private float origPositionY;
-    private Runnable onJumpFinished = () -> {};
 }

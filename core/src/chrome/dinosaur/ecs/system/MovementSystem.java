@@ -43,7 +43,6 @@ public class MovementSystem extends IteratingSystem {
             entity.remove(JumpComponent.class);
             position.setY(jump.getOrigPositionY());
             velocity.setY(0);
-            jump.getOnJumpFinished().run();
         } else {
             velocity.setY(velocity.getY() + gravity);
         }

@@ -44,7 +44,7 @@ public class GameStart extends GameState {
         var dino = new Entity()
             .add(new PositionComponent(0, 0))
             .add(new VelocityComponent(0, 0))
-            .add(new PlayerComponent(false))
+            .add(new PlayerComponent())
             .add(new TextureRegionComponent(assets.get(JUMP_DINO)));
 
         var whiteBlock = new Entity()
