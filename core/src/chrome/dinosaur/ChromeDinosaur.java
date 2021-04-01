@@ -11,33 +11,44 @@ import chrome.dinosaur.gamestate.*;
 
 public class ChromeDinosaur extends Game {
 
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 200;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 200;
 
-	@Inject
-	AssetManager assetManager;
+    public static final String TEXTURE_ATLAS_NAME = "sprite.atlas";
 
-	@Inject
-	SpriteBatch batch;
-	
-	@Inject
-	GameStart gameStart;
+    @Inject
+    AssetManager assetManager;
 
-	@Inject
-	GameRun gameRun;
+    @Inject
+    SpriteBatch batch;
+    
+    @Inject
+    GameStart gameStart;
 
-	@Override
-	public void create() {
-		DaggerGameComponent.create().chromeDinosaur(this);
+    @Inject
+    GameRun gameRun;
 
-		gameStart.setOnFinished(() -> setScreen(gameRun));
-		setScreen(gameStart);
-	}
+    @Override
+    public void create() {
+        DaggerGameComponent.create().chromeDinosaur(this);
 
-	@Override
-	public void dispose() {
-		screen.dispose();
-		assetManager.dispose();
-		batch.dispose();
-	}
+        gameStart.setOnFinished(() -> setScreen(gameRun));
+        setScreen(gameStart);
+    }
+
+    @Override
+    public void dispose() {
+        screen.dispose();
+        assetManager.dispose();
+        batch.dispose();
+    }
+
+    public enum Asset {
+        WHITE_BLOCK, TITLE_DINO, JUMP_DINO, FLOOR1;
+
+        @Override
+        public String toString() {
+            return name().toLowerCase();
+        }
+    }
 }

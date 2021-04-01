@@ -1,11 +1,16 @@
 package chrome.dinosaur.gamestate;
 
+import static chrome.dinosaur.ChromeDinosaur.Asset.*;
+
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
 
 public class GameStart extends GameState {
@@ -19,27 +24,40 @@ public class GameStart extends GameState {
     @Inject
     Viewport viewport;
     
-    @Inject
     TextureRegion titleDino;
     
+    @Inject
+    Map<Asset, TextureRegion> assets;
+
     @Inject
     ComponentMapper<GameStateFinishedComponent> gameStateFinishedMapper;
     
     @Inject
-    public GameStart() {}
+    public GameStart() { }
 
     @Override
     public void show() {
-        Entity dino = new Entity()
+        var floor = new Entity()
+            .add(new PositionComponent(0, 0))
+            .add(new TextureRegionComponent(assets.get(FLOOR1)));
+
+        var dino = new Entity()
             .add(new PositionComponent(0, 0))
             .add(new VelocityComponent(0, 0))
             .add(new PlayerComponent(false))
-            .add(new TextureRegionComponent(titleDino));
+            .add(new TextureRegionComponent(assets.get(JUMP_DINO)));
 
-        Entity gameStateFinished = new Entity()
+        var whiteBlock = new Entity()
+            .add(new PositionComponent(assets.get(JUMP_DINO).getRegionWidth(), 0))
+            .add(new VelocityComponent(0, 0))
+            .add(new TextureRegionComponent(assets.get(WHITE_BLOCK)));
+
+        var gameStateFinished = new Entity()
             .add(new GameStateFinishedComponent(onFinished, false));
 
+        engine.addEntity(floor);
         engine.addEntity(dino);
+        engine.addEntity(whiteBlock);
         engine.addEntity(gameStateFinished);
     }
     
