@@ -30,22 +30,22 @@ public class MovementSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        PositionComponent position = positioMapper.get(entity);
-        VelocityComponent velocity = velocityMapper.get(entity);
+        var position = positioMapper.get(entity);
+        var velocity = velocityMapper.get(entity);
 
         position.setX(position.getX() + velocity.getX());
         position.setY(position.getY() + velocity.getY());
 
-        JumpComponent jump = jumpMapper.get(entity);
-        if (jump != null) {
-            if (position.getY() <= jump.getOrigPositionY()) {
-                entity.remove(JumpComponent.class);
-                position.setY(jump.getOrigPositionY());
-                velocity.setY(0);
-                jump.getOnJumpFinished().run();
-            } else {
-                velocity.setY(velocity.getY() + gravity);
-            }
+        var jump = jumpMapper.get(entity);
+        if (jump == null) return;
+
+        if (position.getY() <= jump.getOrigPositionY()) {
+            entity.remove(JumpComponent.class);
+            position.setY(jump.getOrigPositionY());
+            velocity.setY(0);
+            jump.getOnJumpFinished().run();
+        } else {
+            velocity.setY(velocity.getY() + gravity);
         }
     }
 }

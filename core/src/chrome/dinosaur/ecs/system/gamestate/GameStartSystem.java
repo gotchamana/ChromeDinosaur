@@ -40,28 +40,27 @@ public class GameStartSystem extends EntitySystem {
     
     @Override
     public void update(float delta) {
-        Engine engine = getEngine();
-        Entity player = engine.getEntitiesFor(playerFamily).first();
-        Entity gameStateFinished = engine.getEntitiesFor(gameStateFinishedFamily).first();
+        var player = getEngine().getEntitiesFor(playerFamily).first();
+        if (jumpMapper.has(player)) return;
 
-        if (!jumpMapper.has(player)) {
-            PlayerComponent playerComponent = playerMapper.get(player);
+        var playerComponent = playerMapper.get(player);
 
-            if (playerComponent.isJumped()) {
-                GameStateFinishedComponent gameStateFinishedComponent = gameStateFinishedMapper.get(gameStateFinished);
-                gameStateFinishedComponent.setFinished(true);
-            } else if (isKeyUpOrSpacePressed()) {
-                PositionComponent position = positionMapper.get(player);
-                VelocityComponent velocity = velocityMapper.get(player);
+        if (playerComponent.isJumped()) {
+            var gameStateFinished = getEngine().getEntitiesFor(gameStateFinishedFamily).first();
+            gameStateFinishedMapper.get(gameStateFinished).setFinished(true);
+            return;
+        }
 
-                player.add(new JumpComponent(position.getY(), () -> playerComponent.setJumped(true)));
-                velocity.setY(jumpVelocity);
-            }
+        if (isKeyUpOrSpacePressed()) {
+            var position = positionMapper.get(player);
+            var velocity = velocityMapper.get(player);
+
+            player.add(new JumpComponent(position.getY(), () -> playerComponent.setJumped(true)));
+            velocity.setY(jumpVelocity);
         }
     }
 
     private boolean isKeyUpOrSpacePressed() {
-        return Gdx.input.isKeyPressed(Input.Keys.UP) ||
-            Gdx.input.isKeyPressed(Input.Keys.SPACE);
+        return Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.SPACE);
     }
 }
