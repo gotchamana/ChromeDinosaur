@@ -1,5 +1,7 @@
 package chrome.dinosaur.di.module;
 
+import static chrome.dinosaur.ChromeDinosaur.*;
+
 import javax.inject.Singleton;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -23,8 +25,8 @@ public class GraphicsModule {
     @Provides
     @Singleton
     public static Viewport provideViewport() {
-        var camera = new OrthographicCamera(800, 200);
+        var camera = new OrthographicCamera(WIDTH, HEIGHT);
         camera.setToOrtho(false);
-        return new FitViewport(800, 200, camera);
+        return new FitViewport(WIDTH, HEIGHT, camera);
     }
 }

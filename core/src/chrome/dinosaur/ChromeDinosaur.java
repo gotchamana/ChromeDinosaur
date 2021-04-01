@@ -11,6 +11,9 @@ import chrome.dinosaur.gamestate.*;
 
 public class ChromeDinosaur extends Game {
 
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 200;
+
 	@Inject
 	AssetManager assetManager;
 

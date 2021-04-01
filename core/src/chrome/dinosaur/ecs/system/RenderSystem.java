@@ -2,18 +2,13 @@ package chrome.dinosaur.ecs.system;
 
 import javax.inject.*;
 
-import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 
-import chrome.dinosaur.ecs.component.AnimationComponent;
-import chrome.dinosaur.ecs.component.PositionComponent;
-import chrome.dinosaur.ecs.component.TextureRegionComponent;
+import chrome.dinosaur.ecs.component.*;
 
 public class RenderSystem extends IteratingSystem {
 
