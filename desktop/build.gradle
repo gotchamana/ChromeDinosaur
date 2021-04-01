@@ -1,8 +1,13 @@
-sourceCompatibility = 11
-sourceSets.main.java.srcDirs = [ "src/" ]
+ext {
+    mainClassName = 'chrome.dinosaur.desktop.DesktopLauncher'
+    assetsDir = new File('../core/assets');
+}
 
-project.ext.mainClassName = "chrome.dinosaur.desktop.DesktopLauncher"
-project.ext.assetsDir = new File("../core/assets");
+dependencies {
+    implementation project(':core')
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
 
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
@@ -10,7 +15,7 @@ task run(dependsOn: classes, type: JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
-    jvmArgs "--illegal-access=deny"
+    jvmArgs '--illegal-access=deny'
 }
 
 task debug(dependsOn: classes, type: JavaExec) {
@@ -22,15 +27,13 @@ task debug(dependsOn: classes, type: JavaExec) {
     debug = true
 }
 
-task dist(type: Jar) {
+task dist(dependsOn: classes, type: Jar) {
     from files(sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from { configurations.compile.collect { zipTree(it) } }
     from files(project.assetsDir);
  
     manifest {
         attributes 'Main-Class': project.mainClassName
     }
 }
-
-dist.dependsOn classes

@@ -1,4 +1,13 @@
-sourceCompatibility = 11
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+plugins {
+    id 'io.freefair.lombok' version '5.1.0'
+}
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+dependencies {
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation 'com.badlogicgames.ashley:ashley:1.7.3'
+
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
