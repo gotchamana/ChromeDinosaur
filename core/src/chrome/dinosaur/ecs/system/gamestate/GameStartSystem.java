@@ -75,7 +75,7 @@ public class GameStartSystem extends EntitySystem {
                 break;
 
             case PREPARE_GAME_SCENE:
-                whiteBlock.getComponent(VelocityComponent.class).setX(10);
+                whiteBlock.getComponent(VelocityComponent.class).setX(20);
                 state = GameState.GAME_READY;
                 break;
 
