@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
 
-public class GameStart extends GameState {
+public class GameStart extends GameStage {
 
     @Inject
     Engine engine;

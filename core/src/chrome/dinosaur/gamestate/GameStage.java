@@ -2,7 +2,7 @@ package chrome.dinosaur.gamestate;
 
 import com.badlogic.gdx.ScreenAdapter;
 
-public abstract class GameState extends ScreenAdapter {
+public abstract class GameStage extends ScreenAdapter {
     
     protected Runnable onFinished;
     
