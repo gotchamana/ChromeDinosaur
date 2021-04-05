@@ -9,9 +9,10 @@ import chrome.dinosaur.ChromeDinosaur;
 public class DesktopLauncher {
 
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		var config = new LwjglApplicationConfiguration();
 		config.width = WIDTH;
 		config.height = HEIGHT;
+		config.resizable = false;
 
 		new LwjglApplication(new ChromeDinosaur(), config);
 	}
