@@ -24,10 +24,11 @@ public class GameStart extends GameStage {
     @Inject
     Viewport viewport;
     
-    TextureRegion titleDino;
-    
     @Inject
     Map<Asset, TextureRegion> assets;
+
+    @Inject
+    ComponentMapper<PlayerComponent> playerMapper;
 
     @Inject
     ComponentMapper<GameStageFinishedComponent> gameStageFinishedMapper;
@@ -63,7 +64,10 @@ public class GameStart extends GameStage {
     
     @Override
     public void hide() {
-        engine.removeAllEntities();
+        engine.getEntities().forEach(e -> {
+            if (!playerMapper.has(e))
+                engine.removeEntity(e);
+        });
     }
     
     @Override
