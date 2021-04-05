@@ -30,7 +30,7 @@ public class GameStartSystem extends EntitySystem {
     ComponentMapper<JumpComponent> jumpMapper;
 
     @Inject
-    ComponentMapper<GameStateFinishedComponent> gameStateFinishedMapper;
+    ComponentMapper<GameStageFinishedComponent> gameStageFinishedMapper;
 
     @Inject
     ComponentMapper<PlayerComponent> playerMapper;
@@ -58,7 +58,7 @@ public class GameStartSystem extends EntitySystem {
                     .get();
                 var whiteBlockFamily = Family.all(PositionComponent.class, VelocityComponent.class)
                     .exclude(PlayerComponent.class).get();
-                var gameStateFinishedFamily = Family.all(GameStateFinishedComponent.class).get();
+                var gameStateFinishedFamily = Family.all(GameStageFinishedComponent.class).get();
 
                 player = getEngine().getEntitiesFor(playerFamily).first();
                 whiteBlock = getEngine().getEntitiesFor(whiteBlockFamily).first();
@@ -97,7 +97,7 @@ public class GameStartSystem extends EntitySystem {
             case GAME_READY:
                 if (positionMapper.get(whiteBlock).getX() >= WIDTH) {
                     velocityMapper.get(player).setX(0);
-                    gameStateFinishedMapper.get(gameStateFinished).setFinished(true);
+                    gameStageFinishedMapper.get(gameStateFinished).setFinished(true);
                 }
                 break;
         }

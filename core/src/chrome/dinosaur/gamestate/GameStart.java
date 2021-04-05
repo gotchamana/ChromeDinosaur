@@ -30,7 +30,7 @@ public class GameStart extends GameStage {
     Map<Asset, TextureRegion> assets;
 
     @Inject
-    ComponentMapper<GameStateFinishedComponent> gameStateFinishedMapper;
+    ComponentMapper<GameStageFinishedComponent> gameStageFinishedMapper;
     
     @Inject
     public GameStart() { }
@@ -52,13 +52,13 @@ public class GameStart extends GameStage {
             .add(new VelocityComponent(0, 0))
             .add(new TextureRegionComponent(assets.get(WHITE_BLOCK)));
 
-        var gameStateFinished = new Entity()
-            .add(new GameStateFinishedComponent(onFinished, false));
+        var gameStageFinished = new Entity()
+            .add(new GameStageFinishedComponent(onFinished, false));
 
         engine.addEntity(floor);
         engine.addEntity(dino);
         engine.addEntity(whiteBlock);
-        engine.addEntity(gameStateFinished);
+        engine.addEntity(gameStageFinished);
     }
     
     @Override

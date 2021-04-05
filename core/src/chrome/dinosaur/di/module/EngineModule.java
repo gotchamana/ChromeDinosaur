@@ -17,13 +17,13 @@ public class EngineModule {
     @Provides
     @Singleton
     public static Engine provideEngine(MovementSystem movementSystem, RenderSystem renderSystem,
-        GameStartSystem gameStartSystem, GameStateFinishedSystem gameStateFinishedSystem) {
+        GameStartSystem gameStartSystem, GameStageFinishedSystem gameStageFinishedSystem) {
 
         var engine = new Engine();
         engine.addSystem(movementSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(gameStartSystem);
-        engine.addSystem(gameStateFinishedSystem);
+        engine.addSystem(gameStageFinishedSystem);
 
         return engine;
     }

@@ -2,12 +2,11 @@ package chrome.dinosaur.ecs.component;
 
 import com.badlogic.ashley.core.Component;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
-public class GameStateFinishedComponent implements Component {
+public class GameStageFinishedComponent implements Component {
     private Runnable onFinished;
     private boolean finished;
 }

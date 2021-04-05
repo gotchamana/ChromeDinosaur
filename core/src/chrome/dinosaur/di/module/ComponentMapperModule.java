@@ -45,8 +45,8 @@ public class ComponentMapperModule {
 
     @Provides
     @Singleton
-    public static ComponentMapper<GameStateFinishedComponent> provideGameStateFinishedMapper() {
-        return ComponentMapper.getFor(GameStateFinishedComponent.class);
+    public static ComponentMapper<GameStageFinishedComponent> provideGameStageFinishedMapper() {
+        return ComponentMapper.getFor(GameStageFinishedComponent.class);
     }
 
     @Provides
