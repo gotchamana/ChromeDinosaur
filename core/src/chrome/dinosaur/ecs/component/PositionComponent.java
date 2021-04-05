@@ -10,4 +10,5 @@ import lombok.Data;
 public class PositionComponent implements Component {
     private float x;
     private float y;
+    private float z;
 }

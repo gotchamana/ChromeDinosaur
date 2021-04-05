@@ -38,17 +38,17 @@ public class GameStart extends GameStage {
     @Override
     public void show() {
         var floor = new Entity()
-            .add(new PositionComponent(0, 0))
+            .add(new PositionComponent(0, 0, 0))
             .add(new TextureRegionComponent(assets.get(FLOOR1)));
 
         var dino = new Entity()
-            .add(new PositionComponent(0, 0))
+            .add(new PositionComponent(0, 0, 1))
             .add(new VelocityComponent(0, 0))
             .add(new PlayerComponent())
             .add(new TextureRegionComponent(assets.get(JUMP_DINO)));
 
         var whiteBlock = new Entity()
-            .add(new PositionComponent(assets.get(JUMP_DINO).getRegionWidth(), 0))
+            .add(new PositionComponent(assets.get(JUMP_DINO).getRegionWidth(), 0, 2))
             .add(new VelocityComponent(0, 0))
             .add(new TextureRegionComponent(assets.get(WHITE_BLOCK)));
 

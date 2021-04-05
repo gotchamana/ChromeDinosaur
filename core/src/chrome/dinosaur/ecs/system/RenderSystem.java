@@ -1,16 +1,18 @@
 package chrome.dinosaur.ecs.system;
 
+import java.util.Comparator;
+
 import javax.inject.*;
 
 import com.badlogic.ashley.core.*;
-import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.ashley.systems.SortedIteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.*;
 
 import chrome.dinosaur.ecs.component.*;
 
-public class RenderSystem extends IteratingSystem {
+public class RenderSystem extends SortedIteratingSystem {
 
     @Inject
     ComponentMapper<PositionComponent> positionMapper;
@@ -29,15 +31,15 @@ public class RenderSystem extends IteratingSystem {
     @Inject
     public RenderSystem(@Named("render-system.priority") int priority) {
         super(Family.all(PositionComponent.class).one(TextureRegionComponent.class, AnimationComponent.class).get(),
-            priority);
+            Comparator.comparingDouble(e -> e.getComponent(PositionComponent.class).getZ()), priority);
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        PositionComponent position = positionMapper.get(entity);
-        TextureRegion textureRegion = animationMapper.has(entity)
-                ? animationMapper.get(entity).getAnimation().getKeyFrame(elapsedTime)
-                : textureRegionMapper.get(entity).getTextureRegion();
+        var position = positionMapper.get(entity);
+        var textureRegion = animationMapper.has(entity)
+            ? animationMapper.get(entity).getAnimation().getKeyFrame(elapsedTime)
+            : textureRegionMapper.get(entity).getTextureRegion();
 
         batch.draw(textureRegion, position.getX(), position.getY());
     }
