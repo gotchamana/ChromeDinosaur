@@ -44,7 +44,7 @@ public class ChromeDinosaur extends Game {
     }
 
     public enum Asset {
-        WHITE_BLOCK, TITLE_DINO, JUMP_DINO, FLOOR1;
+        WHITE_BLOCK, TITLE_DINO, JUMP_DINO, FLOOR1, WALK_DINO1, WALK_DINO2;
 
         @Override
         public String toString() {

@@ -1,16 +1,25 @@
 package chrome.dinosaur.ecs.system.gamestate;
 
 import static chrome.dinosaur.ChromeDinosaur.WIDTH;
+import static chrome.dinosaur.ChromeDinosaur.Asset.*;
+
+import java.util.Map;
 
 import javax.inject.*;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 
+import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
 
 public class GameStartSystem extends EntitySystem {
     
+    @Inject
+    Map<Asset, TextureRegion> assets;
+
     @Inject
     ComponentMapper<PositionComponent> positionMapper;
     
@@ -75,13 +84,21 @@ public class GameStartSystem extends EntitySystem {
                 break;
 
             case PREPARE_GAME_SCENE:
+                var animation = new Animation<>(0.1f, assets.get(WALK_DINO1), assets.get(WALK_DINO2));
+                animation.setPlayMode(PlayMode.LOOP);
+                player.add(new AnimationComponent(animation));
+                velocityMapper.get(player).setX(1);
+                player.remove(TextureRegionComponent.class);
+
                 whiteBlock.getComponent(VelocityComponent.class).setX(20);
                 state = GameState.GAME_READY;
                 break;
 
             case GAME_READY:
-                if (whiteBlock.getComponent(PositionComponent.class).getX() >= WIDTH)
+                if (positionMapper.get(whiteBlock).getX() >= WIDTH) {
+                    velocityMapper.get(player).setX(0);
                     gameStateFinishedMapper.get(gameStateFinished).setFinished(true);
+                }
                 break;
         }
     }
