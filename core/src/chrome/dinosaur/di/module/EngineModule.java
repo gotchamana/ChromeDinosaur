@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 import com.badlogic.ashley.core.Engine;
 
 import chrome.dinosaur.ecs.system.*;
-import chrome.dinosaur.ecs.system.gamestate.GameStartSystem;
+import chrome.dinosaur.ecs.system.gamestage.GameStartSystem;
 import dagger.Module;
 import dagger.Provides;
 

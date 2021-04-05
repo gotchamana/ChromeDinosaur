@@ -1,4 +1,4 @@
-package chrome.dinosaur.ecs.system.gamestate;
+package chrome.dinosaur.ecs.system.gamestage;
 
 import static chrome.dinosaur.ChromeDinosaur.WIDTH;
 import static chrome.dinosaur.ChromeDinosaur.Asset.*;
