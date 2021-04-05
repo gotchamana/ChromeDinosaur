@@ -47,4 +47,10 @@ public class SystemModule {
     public static int provideGameStateFinishedSystemPriority() {
         return 3;
     }
+
+    @Provides
+    @Named("game-run-system.priority")
+    public static int provideGameRunSystemPriority() {
+        return 1;
+    }
 }

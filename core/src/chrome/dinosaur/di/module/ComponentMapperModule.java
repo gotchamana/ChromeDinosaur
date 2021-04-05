@@ -54,4 +54,10 @@ public class ComponentMapperModule {
     public static ComponentMapper<PlayerComponent> providePlayerMapper() {
         return ComponentMapper.getFor(PlayerComponent.class);
     }
+
+    @Provides
+    @Singleton
+    public static ComponentMapper<FloorComponent> provideFloorMapper() {
+        return ComponentMapper.getFor(FloorComponent.class);
+    }
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
+import chrome.dinosaur.ecs.system.gamestage.*;
 
 public class GameStart extends GameStage {
 
@@ -68,6 +69,9 @@ public class GameStart extends GameStage {
             if (!playerMapper.has(e))
                 engine.removeEntity(e);
         });
+
+        engine.getSystem(GameStartSystem.class).setProcessing(false);
+        engine.getSystem(GameRunSystem.class).setProcessing(true);
     }
     
     @Override
