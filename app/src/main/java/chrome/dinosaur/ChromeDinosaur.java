@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.backends.lwjgl.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import chrome.dinosaur.di.component.DaggerGameComponent;
@@ -21,7 +22,7 @@ public class ChromeDinosaur extends Game {
 
     @Inject
     SpriteBatch batch;
-    
+
     @Inject
     GameStart gameStart;
 
@@ -42,6 +43,15 @@ public class ChromeDinosaur extends Game {
         screen.dispose();
         assetManager.dispose();
         batch.dispose();
+    }
+
+    public static void main(String[] arg) {
+        var config = new LwjglApplicationConfiguration();
+        config.width = WIDTH;
+        config.height = HEIGHT;
+        config.resizable = false;
+
+        new LwjglApplication(new ChromeDinosaur(), config);
     }
 
     public enum Asset {
