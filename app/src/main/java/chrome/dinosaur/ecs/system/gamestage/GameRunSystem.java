@@ -40,6 +40,9 @@ public class GameRunSystem extends EntitySystem {
     ComponentMapper<FloorComponent> floorMapper;
 
     @Inject
+    ComponentMapper<ObstacleComponent> obstacleMapper;
+
+    @Inject
     ComponentMapper<TextureRegionComponent> textureRegionMapper;
 
     @Inject
@@ -50,6 +53,7 @@ public class GameRunSystem extends EntitySystem {
     float jumpVelocity;
 
     private ImmutableArray<Entity> floors;
+    private ImmutableArray<Entity> obstacles;
     private Entity player;
     private Component playerWalkAnimationComponent;
     private Component playerCrouchWalkAnimationComponent;
@@ -67,6 +71,9 @@ public class GameRunSystem extends EntitySystem {
         if (state == GameState.INIT_STAGE) {
             var floorFamily = Family.all(FloorComponent.class).get();
             floors = getEngine().getEntitiesFor(floorFamily);
+
+            var obstacleFamily = Family.all(ObstacleComponent.class).get();
+            obstacles = getEngine().getEntitiesFor(obstacleFamily);
 
             var playerFamily = Family.all(PlayerComponent.class).get();
             player = getEngine().getEntitiesFor(playerFamily).first();
@@ -86,6 +93,7 @@ public class GameRunSystem extends EntitySystem {
         }
 
         resetInvisibleFloor();
+        resetInvisibleObstacle();
     }
 
     private void handlePlayerJump() {
@@ -104,6 +112,10 @@ public class GameRunSystem extends EntitySystem {
             player.add(playerWalkAnimationComponent);
             player.remove(TextureRegionComponent.class);
         }
+    }
+
+    private boolean isKeyUpOrSpacePressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.SPACE);
     }
 
     private boolean isPlayerJumping() {
@@ -141,8 +153,23 @@ public class GameRunSystem extends EntitySystem {
         return floorTextures[0];
     }
 
-    private boolean isKeyUpOrSpacePressed() {
-        return Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.SPACE);
+    private void resetInvisibleObstacle() {
+        obstacles.forEach(obstacle -> {
+            var position = positionMapper.get(obstacle);
+            var textureRegionComponent = textureRegionMapper.get(obstacle);
+            if (position.getX() + textureRegionComponent.getTextureRegion().getRegionWidth() <= 0) {
+                position.setX(WIDTH * 2f);
+                textureRegionComponent.setTextureRegion(getRandomObstacleTextureRegion());
+            }
+        });
+    }
+
+    private TextureRegion getRandomObstacleTextureRegion() {
+        var obstacleTextures = new TextureRegion[] { assets.get(SMALL_CACTUS_ONE), assets.get(SMALL_CACTUS_TWO),
+            assets.get(SMALL_CACTUS_THREE), assets.get(LARGE_CACTUS_ONE), assets.get(LARGE_CACTUS_TWO),
+            assets.get(LARGE_CACTUS_FOUR) };
+        Collections.shuffle(Arrays.asList(obstacleTextures));
+        return obstacleTextures[0];
     }
 
     private enum GameState {

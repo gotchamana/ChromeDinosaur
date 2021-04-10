@@ -1,7 +1,7 @@
 package chrome.dinosaur.gamestate;
 
 import static chrome.dinosaur.ChromeDinosaur.WIDTH;
-import static chrome.dinosaur.ChromeDinosaur.Asset.FLOOR1;
+import static chrome.dinosaur.ChromeDinosaur.Asset.*;
 
 import java.util.Map;
 
@@ -48,11 +48,25 @@ public class GameRun extends GameStage {
             .add(new FloorComponent())
             .add(new TextureRegionComponent(assets.get(FLOOR1)));
 
+        var obstacle1 = new Entity()
+            .add(new PositionComponent(WIDTH, 0, 1))
+            .add(new VelocityComponent(-10, 0))
+            .add(new ObstacleComponent())
+            .add(new TextureRegionComponent(assets.get(SMALL_CACTUS_ONE)));
+
+        var obstacle2 = new Entity()
+            .add(new PositionComponent(WIDTH * 2f, 0, 1))
+            .add(new VelocityComponent(-10, 0))
+            .add(new ObstacleComponent())
+            .add(new TextureRegionComponent(assets.get(SMALL_CACTUS_ONE)));
+
         var gameStageFinished = new Entity()
             .add(new GameStageFinishedComponent(onFinished, false));
 
         engine.addEntity(floor1);
         engine.addEntity(floor2);
+        engine.addEntity(obstacle1);
+        engine.addEntity(obstacle2);
         engine.addEntity(gameStageFinished);
     }
     

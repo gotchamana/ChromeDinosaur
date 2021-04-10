@@ -60,4 +60,10 @@ public class ComponentMapperModule {
     public static ComponentMapper<FloorComponent> provideFloorMapper() {
         return ComponentMapper.getFor(FloorComponent.class);
     }
+
+    @Provides
+    @Singleton
+    public static ComponentMapper<ObstacleComponent> provideObstacleMapper() {
+        return ComponentMapper.getFor(ObstacleComponent.class);
+    }
 }
