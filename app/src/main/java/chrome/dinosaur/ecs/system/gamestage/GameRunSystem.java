@@ -10,7 +10,8 @@ import javax.inject.*;
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
@@ -50,10 +51,11 @@ public class GameRunSystem extends EntitySystem {
 
     private ImmutableArray<Entity> floors;
     private Entity player;
-    private Component playerAnimationComponent;
-    private Component playerTextureRegionComponent;
+    private Component playerWalkAnimationComponent;
+    private Component playerCrouchWalkAnimationComponent;
+    private Component playerJumpTextureRegionComponent;
 
-    private GameState state = GameState.PREPARE_ENTITY;
+    private GameState state = GameState.INIT_STAGE;
 
     @Inject
     public GameRunSystem(@Named("game-run-system.priority") int priority) {
@@ -62,12 +64,21 @@ public class GameRunSystem extends EntitySystem {
 
     @Override
     public void update(float delta) {
-        if (state == GameState.PREPARE_ENTITY) {
+        if (state == GameState.INIT_STAGE) {
             var floorFamily = Family.all(FloorComponent.class).get();
             floors = getEngine().getEntitiesFor(floorFamily);
 
             var playerFamily = Family.all(PlayerComponent.class).get();
             player = getEngine().getEntitiesFor(playerFamily).first();
+
+            var animation = new Animation<>(0.1f, assets.get(CROUCH_WALK_DINO1), assets.get(CROUCH_WALK_DINO2));
+            animation.setPlayMode(PlayMode.LOOP);
+            playerCrouchWalkAnimationComponent = new AnimationComponent(animation);
+
+            playerWalkAnimationComponent = Objects.requireNonNull(animationMapper.get(player),
+                "Player doesn't have AnimationComponent");
+            playerJumpTextureRegionComponent = new TextureRegionComponent(assets.get(JUMP_DINO));
+
             state = GameState.GAME_RUN;
         } else {
             handlePlayerJump();
@@ -84,14 +95,12 @@ public class GameRunSystem extends EntitySystem {
             var velocity = velocityMapper.get(player);
             velocity.setY(jumpVelocity);
 
-            playerTextureRegionComponent = player.addAndReturn(Objects.requireNonNullElse(playerTextureRegionComponent,
-                new TextureRegionComponent(assets.get(JUMP_DINO))));
-            playerAnimationComponent = Objects.requireNonNullElse(player.remove(AnimationComponent.class),
-                playerAnimationComponent);
+            player.add(playerJumpTextureRegionComponent);
+            player.remove(AnimationComponent.class);
         }
 
         if (isPlayerJumped()) {
-            player.add(Objects.requireNonNull(playerAnimationComponent, "Player's AnimationComponent wasn't set"));
+            player.add(playerWalkAnimationComponent);
             player.remove(TextureRegionComponent.class);
         }
     }
@@ -125,6 +134,6 @@ public class GameRunSystem extends EntitySystem {
     }
 
     private enum GameState {
-        PREPARE_ENTITY, GAME_RUN
+        INIT_STAGE, GAME_RUN
     }
 }
