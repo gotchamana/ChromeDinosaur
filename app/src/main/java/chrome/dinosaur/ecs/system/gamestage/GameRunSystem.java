@@ -82,6 +82,7 @@ public class GameRunSystem extends EntitySystem {
             state = GameState.GAME_RUN;
         } else {
             handlePlayerJump();
+            handlePlayerCrouch();
         }
 
         resetInvisibleFloor();
@@ -111,6 +112,17 @@ public class GameRunSystem extends EntitySystem {
 
     private boolean isPlayerJumped() {
         return !isPlayerJumping() && !animationMapper.has(player);
+    }
+
+    private void handlePlayerCrouch() {
+        if (isKeyDownPressed() && !isPlayerJumping())
+            player.add(playerCrouchWalkAnimationComponent);
+        else if (!isKeyDownPressed() && !isPlayerJumping())
+            player.add(playerWalkAnimationComponent);
+    }
+
+    private boolean isKeyDownPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.DOWN);
     }
 
     private void resetInvisibleFloor() {
