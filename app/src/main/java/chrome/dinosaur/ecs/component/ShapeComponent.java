@@ -5,9 +5,8 @@ import com.badlogic.gdx.math.Polygon;
 
 import lombok.*;
 
-@AllArgsConstructor
 @Data
-public class PlayerComponent implements Component {
-    private Polygon normalShape;
-    private Polygon crouchShape;
+@AllArgsConstructor
+public class ShapeComponent implements Component {
+    private Polygon shape;
 }

@@ -51,12 +51,14 @@ public class GameRun extends GameStage {
         var obstacle1 = new Entity()
             .add(new PositionComponent(WIDTH, 0, 1))
             .add(new VelocityComponent(-10, 0))
+            .add(new ShapeComponent(SMALL_CACTUS_ONE.getShape()))
             .add(new ObstacleComponent())
             .add(new TextureRegionComponent(assets.get(SMALL_CACTUS_ONE)));
 
         var obstacle2 = new Entity()
             .add(new PositionComponent(WIDTH * 2f, 0, 1))
             .add(new VelocityComponent(-10, 0))
+            .add(new ShapeComponent(SMALL_CACTUS_ONE.getShape()))
             .add(new ObstacleComponent())
             .add(new TextureRegionComponent(assets.get(SMALL_CACTUS_ONE)));
 

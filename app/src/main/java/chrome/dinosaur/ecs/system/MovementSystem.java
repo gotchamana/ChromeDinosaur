@@ -1,5 +1,7 @@
 package chrome.dinosaur.ecs.system;
 
+import java.util.Optional;
+
 import javax.inject.*;
 
 import com.badlogic.ashley.core.*;
@@ -18,6 +20,9 @@ public class MovementSystem extends IteratingSystem {
     @Inject
     ComponentMapper<JumpComponent> jumpMapper;
 
+    @Inject
+    ComponentMapper<ShapeComponent> shapeMapper;
+
     private float gravity;
     
     @Inject
@@ -35,6 +40,9 @@ public class MovementSystem extends IteratingSystem {
 
         position.setX(position.getX() + velocity.getX());
         position.setY(position.getY() + velocity.getY());
+
+        Optional.ofNullable(shapeMapper.get(entity))
+            .ifPresent(shapeComponent -> shapeComponent.getShape().setPosition(position.getX(), position.getY()));
 
         var jump = jumpMapper.get(entity);
         if (jump == null) return;

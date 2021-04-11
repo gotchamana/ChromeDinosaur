@@ -66,4 +66,10 @@ public class ComponentMapperModule {
     public static ComponentMapper<ObstacleComponent> provideObstacleMapper() {
         return ComponentMapper.getFor(ObstacleComponent.class);
     }
+
+    @Provides
+    @Singleton
+    public static ComponentMapper<ShapeComponent> provideShapeMapper() {
+        return ComponentMapper.getFor(ShapeComponent.class);
+    }
 }

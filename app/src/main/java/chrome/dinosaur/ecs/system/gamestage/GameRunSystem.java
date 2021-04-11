@@ -12,6 +12,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.math.*;
 
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
@@ -47,6 +48,9 @@ public class GameRunSystem extends EntitySystem {
 
     @Inject
     ComponentMapper<AnimationComponent> animationMapper;
+
+    @Inject
+    ComponentMapper<ShapeComponent> shapeMapper;
 
     @Inject
     @Named("game-start-system.jump-velocity")
@@ -90,6 +94,7 @@ public class GameRunSystem extends EntitySystem {
         } else {
             handlePlayerJump();
             handlePlayerCrouch();
+            handlePlayerCollision();
         }
 
         resetInvisibleFloor();
@@ -137,6 +142,15 @@ public class GameRunSystem extends EntitySystem {
         return Gdx.input.isKeyPressed(Input.Keys.DOWN);
     }
 
+    private void handlePlayerCollision() {
+        var playerShapeComponent = shapeMapper.get(player);
+        obstacles.forEach(obstacle -> {
+            var obstacleShapeComponent = shapeMapper.get(obstacle);
+            if (Intersector.overlapConvexPolygons(playerShapeComponent.getShape(), obstacleShapeComponent.getShape()))
+                Gdx.app.log("LOG", "Collision " + System.currentTimeMillis());
+        });
+    }
+
     private void resetInvisibleFloor() {
         floors.forEach(floor -> {
             var position = positionMapper.get(floor);
@@ -157,19 +171,27 @@ public class GameRunSystem extends EntitySystem {
         obstacles.forEach(obstacle -> {
             var position = positionMapper.get(obstacle);
             var textureRegionComponent = textureRegionMapper.get(obstacle);
-            if (position.getX() + textureRegionComponent.getTextureRegion().getRegionWidth() <= 0) {
-                position.setX(WIDTH * 2f);
-                textureRegionComponent.setTextureRegion(getRandomObstacleTextureRegion());
-            }
+            if (!isObstacleInvisible(position, textureRegionComponent)) return;
+            
+            position.setX(WIDTH * 2f);
+
+            var randomObstacle = getRandomObstacleAsset();
+            textureRegionComponent.setTextureRegion(assets.get(randomObstacle));
+
+            var obstacleShape = randomObstacle.getShape();
+            obstacleShape.setPosition(position.getX(), position.getY());
+            shapeMapper.get(obstacle).setShape(obstacleShape);
         });
     }
 
-    private TextureRegion getRandomObstacleTextureRegion() {
-        var obstacleTextures = new TextureRegion[] { assets.get(SMALL_CACTUS_ONE), assets.get(SMALL_CACTUS_TWO),
-            assets.get(SMALL_CACTUS_THREE), assets.get(LARGE_CACTUS_ONE), assets.get(LARGE_CACTUS_TWO),
-            assets.get(LARGE_CACTUS_FOUR) };
-        Collections.shuffle(Arrays.asList(obstacleTextures));
-        return obstacleTextures[0];
+    private boolean isObstacleInvisible(PositionComponent position, TextureRegionComponent textureRegionComponent) {
+        return position.getX() + textureRegionComponent.getTextureRegion().getRegionWidth() <= 0;
+    }
+
+    private Asset getRandomObstacleAsset() {
+        var obstacleAssets = new Asset[] { SMALL_CACTUS_ONE, SMALL_CACTUS_TWO, SMALL_CACTUS_THREE, LARGE_CACTUS_ONE,
+            LARGE_CACTUS_TWO, LARGE_CACTUS_FOUR };
+        return obstacleAssets[MathUtils.random.nextInt(obstacleAssets.length)];
     }
 
     private enum GameState {
