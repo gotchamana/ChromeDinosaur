@@ -16,7 +16,9 @@ import com.badlogic.gdx.math.*;
 
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class GameRunSystem extends EntitySystem {
     
     @Inject
@@ -147,7 +149,7 @@ public class GameRunSystem extends EntitySystem {
         obstacles.forEach(obstacle -> {
             var obstacleShapeComponent = shapeMapper.get(obstacle);
             if (Intersector.overlapConvexPolygons(playerShapeComponent.getShape(), obstacleShapeComponent.getShape()))
-                Gdx.app.log("LOG", "Collision " + System.currentTimeMillis());
+                log.debug("Collision");
         });
     }
 
