@@ -91,13 +91,24 @@ public class GameRunSystem extends EntitySystem {
                 var playerFamily = Family.all(PlayerComponent.class).get();
                 player = getEngine().getEntitiesFor(playerFamily).first();
 
-                var animation = new Animation<>(0.1f, assets.get(CROUCH_WALK_DINO1), assets.get(CROUCH_WALK_DINO2));
-                animation.setPlayMode(PlayMode.LOOP);
-                playerCrouchWalkAnimationComponent = new AnimationComponent(animation);
+                positionMapper.get(player).setY(0);
 
-                playerWalkAnimationComponent = Objects.requireNonNull(animationMapper.get(player),
-                    "Player doesn't have AnimationComponent");
-                playerJumpTextureRegionComponent = new TextureRegionComponent(assets.get(JUMP_DINO));
+                playerCrouchWalkAnimationComponent = Objects.requireNonNullElseGet(playerCrouchWalkAnimationComponent,
+                    () -> {
+                        var animation = new Animation<>(0.1f, assets.get(CROUCH_WALK_DINO1),
+                            assets.get(CROUCH_WALK_DINO2));
+                        animation.setPlayMode(PlayMode.LOOP);
+                        return new AnimationComponent(animation);
+                    });
+
+                playerWalkAnimationComponent = Objects.requireNonNullElse(playerWalkAnimationComponent,
+                    animationMapper.get(player));
+
+                playerJumpTextureRegionComponent = Objects.requireNonNullElse(playerJumpTextureRegionComponent,
+                    new TextureRegionComponent(assets.get(JUMP_DINO)));
+
+                var velocityFamily = Family.all(VelocityComponent.class).exclude(PlayerComponent.class).get();
+                getEngine().getEntitiesFor(velocityFamily).forEach(entity -> velocityMapper.get(entity).setX(-10));
 
                 state = GameState.GAME_RUN;
                 break;
@@ -113,7 +124,7 @@ public class GameRunSystem extends EntitySystem {
                 player.remove(JumpComponent.class);
                 player.remove(AnimationComponent.class);
 
-                var velocityFamily = Family.all(VelocityComponent.class).get();
+                velocityFamily = Family.all(VelocityComponent.class).exclude(PlayerComponent.class).get();
                 getEngine().getEntitiesFor(velocityFamily).forEach(entity -> velocityMapper.get(entity).setX(0));
 
                 state = GameState.INIT_STAGE;
@@ -174,6 +185,7 @@ public class GameRunSystem extends EntitySystem {
             if (Intersector.overlapConvexPolygons(playerShape, obstacleShape)) {
                 log.debug("Player was collided with obstacle, player's polygon vertices: {}, obstacle's polygon vertices: {}",
                     playerShape.getTransformedVertices(), obstacleShape.getTransformedVertices());
+                velocityMapper.get(player).setY(0);
                 state = GameState.GAME_OVER;
             }
         });

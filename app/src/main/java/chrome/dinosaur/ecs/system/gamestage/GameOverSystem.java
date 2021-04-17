@@ -5,7 +5,7 @@ import static chrome.dinosaur.ChromeDinosaur.Asset.SHOCK_DINO;
 
 import java.util.Map;
 
-import javax.inject.Inject;
+import javax.inject.*;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.Gdx;
@@ -40,7 +40,9 @@ public class GameOverSystem extends EntitySystem {
     private GameState state = GameState.INIT_STAGE;
 
     @Inject
-    public GameOverSystem() {}
+    public GameOverSystem(@Named("game-over-system.priority") int priority) {
+        super(priority);
+    }
 
     @Override
     public void update(float delta) {

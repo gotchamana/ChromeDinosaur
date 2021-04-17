@@ -53,4 +53,10 @@ public class SystemModule {
     public static int provideGameRunSystemPriority() {
         return 1;
     }
+
+    @Provides
+    @Named("game-over-system.priority")
+    public static int provideGameOverSystemPriority() {
+        return 1;
+    }
 }
