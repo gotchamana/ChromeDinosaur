@@ -60,7 +60,10 @@ public class GameRunSystem extends EntitySystem {
 
     private ImmutableArray<Entity> floors;
     private ImmutableArray<Entity> obstacles;
+
     private Entity player;
+    private Entity gameStageFinished;
+
     private Component playerWalkAnimationComponent;
     private Component playerCrouchWalkAnimationComponent;
     private Component playerJumpTextureRegionComponent;
@@ -74,29 +77,48 @@ public class GameRunSystem extends EntitySystem {
 
     @Override
     public void update(float delta) {
-        if (state == GameState.INIT_STAGE) {
-            var floorFamily = Family.all(FloorComponent.class).get();
-            floors = getEngine().getEntitiesFor(floorFamily);
+        switch (state) {
+            case INIT_STAGE:
+                var floorFamily = Family.all(FloorComponent.class).get();
+                floors = getEngine().getEntitiesFor(floorFamily);
 
-            var obstacleFamily = Family.all(ObstacleComponent.class).get();
-            obstacles = getEngine().getEntitiesFor(obstacleFamily);
+                var obstacleFamily = Family.all(ObstacleComponent.class).get();
+                obstacles = getEngine().getEntitiesFor(obstacleFamily);
 
-            var playerFamily = Family.all(PlayerComponent.class).get();
-            player = getEngine().getEntitiesFor(playerFamily).first();
+                var gameStageFinishedFamily = Family.all(GameStageFinishedComponent.class).get();
+                gameStageFinished = getEngine().getEntitiesFor(gameStageFinishedFamily).first();
 
-            var animation = new Animation<>(0.1f, assets.get(CROUCH_WALK_DINO1), assets.get(CROUCH_WALK_DINO2));
-            animation.setPlayMode(PlayMode.LOOP);
-            playerCrouchWalkAnimationComponent = new AnimationComponent(animation);
+                var playerFamily = Family.all(PlayerComponent.class).get();
+                player = getEngine().getEntitiesFor(playerFamily).first();
 
-            playerWalkAnimationComponent = Objects.requireNonNull(animationMapper.get(player),
-                "Player doesn't have AnimationComponent");
-            playerJumpTextureRegionComponent = new TextureRegionComponent(assets.get(JUMP_DINO));
+                var animation = new Animation<>(0.1f, assets.get(CROUCH_WALK_DINO1), assets.get(CROUCH_WALK_DINO2));
+                animation.setPlayMode(PlayMode.LOOP);
+                playerCrouchWalkAnimationComponent = new AnimationComponent(animation);
 
-            state = GameState.GAME_RUN;
-        } else {
-            handlePlayerJump();
-            handlePlayerCrouch();
-            handlePlayerCollision();
+                playerWalkAnimationComponent = Objects.requireNonNull(animationMapper.get(player),
+                    "Player doesn't have AnimationComponent");
+                playerJumpTextureRegionComponent = new TextureRegionComponent(assets.get(JUMP_DINO));
+
+                state = GameState.GAME_RUN;
+                break;
+        
+            case GAME_RUN:
+                handlePlayerJump();
+                handlePlayerCrouch();
+                handlePlayerCollision();
+                break;
+
+            case GAME_OVER:
+                velocityMapper.get(player).setY(0);
+                player.remove(JumpComponent.class);
+                player.remove(AnimationComponent.class);
+
+                var velocityFamily = Family.all(VelocityComponent.class).get();
+                getEngine().getEntitiesFor(velocityFamily).forEach(entity -> velocityMapper.get(entity).setX(0));
+
+                state = GameState.INIT_STAGE;
+                gameStageFinishedMapper.get(gameStageFinished).setFinished(true);
+                break;
         }
 
         resetInvisibleFloor();
@@ -147,9 +169,13 @@ public class GameRunSystem extends EntitySystem {
     private void handlePlayerCollision() {
         var playerShapeComponent = shapeMapper.get(player);
         obstacles.forEach(obstacle -> {
-            var obstacleShapeComponent = shapeMapper.get(obstacle);
-            if (Intersector.overlapConvexPolygons(playerShapeComponent.getShape(), obstacleShapeComponent.getShape()))
-                log.debug("Collision");
+            var playerShape = playerShapeComponent.getShape();
+            var obstacleShape = shapeMapper.get(obstacle).getShape();
+            if (Intersector.overlapConvexPolygons(playerShape, obstacleShape)) {
+                log.debug("Player was collided with obstacle, player's polygon vertices: {}, obstacle's polygon vertices: {}",
+                    playerShape.getTransformedVertices(), obstacleShape.getTransformedVertices());
+                state = GameState.GAME_OVER;
+            }
         });
     }
 
@@ -197,6 +223,6 @@ public class GameRunSystem extends EntitySystem {
     }
 
     private enum GameState {
-        INIT_STAGE, GAME_RUN
+        INIT_STAGE, GAME_RUN, GAME_OVER
     }
 }

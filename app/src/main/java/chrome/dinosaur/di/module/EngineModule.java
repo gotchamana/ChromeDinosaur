@@ -17,10 +17,11 @@ public class EngineModule {
     @Provides
     @Singleton
     public static Engine provideEngine(MovementSystem movementSystem, RenderSystem renderSystem,
-        GameStartSystem gameStartSystem, GameRunSystem gameRunSystem,
+        GameStartSystem gameStartSystem, GameRunSystem gameRunSystem, GameOverSystem gameOverSystem,
         GameStageFinishedSystem gameStageFinishedSystem) {
 
         gameRunSystem.setProcessing(false);
+        gameOverSystem.setProcessing(false);
 
         var engine = new Engine();
         engine.addSystem(movementSystem);
@@ -28,6 +29,7 @@ public class EngineModule {
         engine.addSystem(gameStageFinishedSystem);
         engine.addSystem(gameStartSystem);
         engine.addSystem(gameRunSystem);
+        engine.addSystem(gameOverSystem);
 
         return engine;
     }

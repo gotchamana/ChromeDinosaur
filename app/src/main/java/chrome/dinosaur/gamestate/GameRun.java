@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
+import chrome.dinosaur.ecs.system.gamestage.*;
 
 public class GameRun extends GameStage {
     
@@ -74,7 +75,11 @@ public class GameRun extends GameStage {
     
     @Override
     public void hide() {
-        engine.removeAllEntities();
+        var gameStageFinishedFamily = Family.all(GameStageFinishedComponent.class).get();
+        engine.removeEntity(engine.getEntitiesFor(gameStageFinishedFamily).first());
+
+        engine.getSystem(GameRunSystem.class).setProcessing(false);
+        engine.getSystem(GameOverSystem.class).setProcessing(true);
     }
     
     @Override

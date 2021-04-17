@@ -33,12 +33,16 @@ public class ChromeDinosaur extends Game {
     @Inject
     GameRun gameRun;
 
+    @Inject
+    GameOver gameOver;
+
     @Override
     public void create() {
         DaggerGameComponent.create().chromeDinosaur(this);
 
         gameStart.setOnFinished(() -> setScreen(gameRun));
-        gameRun.setOnFinished(() -> {});
+        gameRun.setOnFinished(() -> setScreen(gameOver));
+        gameOver.setOnFinished(() -> setScreen(gameRun));
         setScreen(gameStart);
     }
 
@@ -64,7 +68,7 @@ public class ChromeDinosaur extends Game {
     @AllArgsConstructor
     public enum Asset {
         WHITE_BLOCK, TITLE_DINO, JUMP_DINO, FLOOR1, FLOOR2, FLOOR3, WALK_DINO1, WALK_DINO2, CROUCH_WALK_DINO1,
-        CROUCH_WALK_DINO2,
+        CROUCH_WALK_DINO2, SHOCK_DINO, GAME_OVER, RESTART_BUTTON,
         
         SMALL_CACTUS_ONE(new float[] { 2, 50, 7, 50, 10, 30, 12, 66, 16, 68, 21, 66, 24, 38, 26, 58, 31, 
             58, 31, 37, 22, 32, 20, 3, 12, 3, 12, 24, 2, 29 }),

@@ -11,18 +11,18 @@ public class GameStageFinishedSystem extends EntitySystem {
     @Inject
     ComponentMapper<GameStageFinishedComponent> gameStageFinishedMapper;
     
-    private Family gameStateFinishedFamily;
+    private Family gameStageFinishedFamily;
     
     @Inject
     public GameStageFinishedSystem(@Named("game-state-finished-system.priority") int priority) {
         super(priority);
-        gameStateFinishedFamily = Family.all(GameStageFinishedComponent.class).get();
+        gameStageFinishedFamily = Family.all(GameStageFinishedComponent.class).get();
     }
 
     @Override
     public void update(float delta) {
-        var gameStateFinished = getEngine().getEntitiesFor(gameStateFinishedFamily).first();
-        var gameStageFinishedComponent = gameStageFinishedMapper.get(gameStateFinished);
+        var gameStageFinished = getEngine().getEntitiesFor(gameStageFinishedFamily).first();
+        var gameStageFinishedComponent = gameStageFinishedMapper.get(gameStageFinished);
 
         if (gameStageFinishedComponent.isFinished())
             gameStageFinishedComponent.getOnFinished().run();
