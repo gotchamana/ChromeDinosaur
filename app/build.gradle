@@ -1,6 +1,7 @@
 plugins {
     id 'application'
     id 'io.freefair.lombok' version '5.1.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 repositories {
@@ -45,8 +46,14 @@ run {
     jvmArgs '--illegal-access=deny'
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
+}
+
+shadowJar {
+    archiveBaseName.set(rootProject.name)
+    archiveClassifier.set('')
+    archiveVersion.set('')
 }
 
 sourceCompatibility = 11
