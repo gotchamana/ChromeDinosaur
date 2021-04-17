@@ -11,7 +11,9 @@ import com.badlogic.gdx.math.Polygon;
 import chrome.dinosaur.di.component.DaggerGameComponent;
 import chrome.dinosaur.gamestate.*;
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class ChromeDinosaur extends Game {
 
     public static final int WIDTH = 800;
@@ -48,6 +50,8 @@ public class ChromeDinosaur extends Game {
     }
 
     public static void main(String[] arg) {
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> log.error("Uncaught exception", throwable));
+
         var config = new LwjglApplicationConfiguration();
         config.width = WIDTH;
         config.height = HEIGHT;
