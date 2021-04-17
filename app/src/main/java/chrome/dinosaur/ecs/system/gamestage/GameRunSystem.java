@@ -167,10 +167,17 @@ public class GameRunSystem extends EntitySystem {
     }
 
     private void handlePlayerCrouch() {
-        if (isKeyDownPressed() && !isPlayerJumping())
+        var playerComponent = playerMapper.get(player);
+        var shapeComponent = shapeMapper.get(player);
+
+        if (isKeyDownPressed() && !isPlayerJumping()) {
             player.add(playerCrouchWalkAnimationComponent);
-        else if (!isKeyDownPressed() && !isPlayerJumping())
+            shapeComponent.setShape(playerComponent.getCrouchShape());
+            return;
+        } else if (!isKeyDownPressed() && !isPlayerJumping())
             player.add(playerWalkAnimationComponent);
+
+        shapeComponent.setShape(playerComponent.getNormalShape());
     }
 
     private boolean isKeyDownPressed() {

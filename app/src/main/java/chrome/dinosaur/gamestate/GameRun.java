@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import chrome.dinosaur.ChromeDinosaur.Asset;
@@ -49,19 +50,21 @@ public class GameRun extends GameStage {
             .add(new FloorComponent())
             .add(new TextureRegionComponent(assets.get(FLOOR1)));
 
+        var obstacleAsset = getRandomObstacleAsset();
         var obstacle1 = new Entity()
-            .add(new PositionComponent(WIDTH, 0, 1))
+            .add(new PositionComponent(WIDTH * 3f, 0, 1))
             .add(new VelocityComponent(-10, 0))
-            .add(new ShapeComponent(SMALL_CACTUS_ONE.getShape()))
+            .add(new ShapeComponent(obstacleAsset.getShape()))
             .add(new ObstacleComponent())
-            .add(new TextureRegionComponent(assets.get(SMALL_CACTUS_ONE)));
+            .add(new TextureRegionComponent(assets.get(obstacleAsset)));
 
+        obstacleAsset = getRandomObstacleAsset();
         var obstacle2 = new Entity()
-            .add(new PositionComponent(WIDTH * 2f, 0, 1))
+            .add(new PositionComponent(WIDTH * 4f, 0, 1))
             .add(new VelocityComponent(-10, 0))
-            .add(new ShapeComponent(SMALL_CACTUS_ONE.getShape()))
+            .add(new ShapeComponent(obstacleAsset.getShape()))
             .add(new ObstacleComponent())
-            .add(new TextureRegionComponent(assets.get(SMALL_CACTUS_ONE)));
+            .add(new TextureRegionComponent(assets.get(obstacleAsset)));
 
         var gameStageFinished = new Entity()
             .add(new GameStageFinishedComponent(onFinished, false));
@@ -72,7 +75,13 @@ public class GameRun extends GameStage {
         engine.addEntity(obstacle2);
         engine.addEntity(gameStageFinished);
     }
-    
+
+    private Asset getRandomObstacleAsset() {
+        var obstacleAssets = new Asset[] { SMALL_CACTUS_ONE, SMALL_CACTUS_TWO, SMALL_CACTUS_THREE, LARGE_CACTUS_ONE,
+            LARGE_CACTUS_TWO, LARGE_CACTUS_FOUR };
+        return obstacleAssets[MathUtils.random.nextInt(obstacleAssets.length)];
+    }
+
     @Override
     public void hide() {
         var gameStageFinishedFamily = Family.all(GameStageFinishedComponent.class).get();
