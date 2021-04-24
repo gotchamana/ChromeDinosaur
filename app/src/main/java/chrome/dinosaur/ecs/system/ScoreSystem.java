@@ -30,7 +30,10 @@ public class ScoreSystem extends EntitySystem {
     private Texture scoreTexture;
 
     private Family scoreFamily;
-    private float elapsedTime;
+    private float aggregatedTime;
+
+    private boolean blinking = false;
+    private BlinkSetting blinkSetting = new BlinkSetting();
 
     @Inject
     public ScoreSystem(@Named("score-system.priority") int priority, Map<Asset, TextureRegion> assets) {
@@ -50,33 +53,50 @@ public class ScoreSystem extends EntitySystem {
         var textureRegionComponent = Objects.requireNonNullElse(textureRegionMapper.get(scoreEntity),
             new TextureRegionComponent(new TextureRegion()));
 
-        while (elapsedTime >= 0.1) {
+        while (aggregatedTime >= 0.1) {
             scoreComponent.setCurrentScore((scoreComponent.getCurrentScore() + 1) % 100000);
             drawScore(scoreComponent.getHighScore(), scoreComponent.getCurrentScore());
 
             textureRegionComponent.getTextureRegion().setRegion(scoreTexture);
             scoreEntity.add(textureRegionComponent);
 
-            elapsedTime -= 0.1;
+            aggregatedTime -= 0.1;
+            blinkSetting.aggregatedTime += deltaTime;
         }
 
-        elapsedTime += deltaTime;
+        aggregatedTime += deltaTime;
 	}
 
     private void drawScore(int highScore, int currentScore) {
+        if (currentScore > 0 && currentScore % 100 == 0) {
+            blinking = true;
+            resetBlinkSetting(currentScore);
+        }
+
         scorePixmap.setColor(Color.CLEAR);
         scorePixmap.fill();
 
         var pixmap = getDigitsPixmap();
+        final var scoreFormat = "%05d";
 
-        final var format = "%05d";
         if (highScore > 0)
-            drawHighScore(pixmap, String.format(format, highScore));
-        drawCurrentScore(pixmap, String.format(format, currentScore));
+            drawHighScore(pixmap, String.format(scoreFormat, highScore));
+
+        if (blinking)
+            blinkScore(pixmap, String.format(scoreFormat, blinkSetting.score));
+        else
+            drawCurrentScore(pixmap, String.format(scoreFormat, currentScore));
 
         pixmap.dispose();
 
         scoreTexture.draw(scorePixmap, 0, 0);
+    }
+
+    private void resetBlinkSetting(int currentScore) {
+        blinkSetting.score = currentScore;
+        blinkSetting.times = 0;
+        blinkSetting.flag = true;
+        blinkSetting.aggregatedTime = 0;
     }
 
     private void drawHighScore(Pixmap pixmap, String score) {
@@ -84,6 +104,20 @@ public class ScoreSystem extends EntitySystem {
         scorePixmap.drawPixmap(pixmap, 0, 0, textureRegion.getRegionX(), textureRegion.getRegionY(),
             textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
         drawScoreHelper(pixmap, 0, 3, score);
+    }
+
+    private void blinkScore(Pixmap pixmap, String score) {
+        while (blinkSetting.aggregatedTime >= 0.05) {
+            blinkSetting.flag = !blinkSetting.flag;
+            blinkSetting.times++;
+            blinkSetting.aggregatedTime -= 0.05;
+        }
+
+        if (blinkSetting.flag)
+            drawCurrentScore(pixmap, score);
+        
+        if (blinkSetting.times >= 8)
+            blinking = false;
     }
 
     private void drawCurrentScore(Pixmap pixmap, String score) {
@@ -107,5 +141,12 @@ public class ScoreSystem extends EntitySystem {
             data.prepare();
 
         return data.consumePixmap();
+    }
+
+    private static final class BlinkSetting {
+        private boolean flag;
+        private float aggregatedTime;
+        private int times;
+        private int score;
     }
 }
