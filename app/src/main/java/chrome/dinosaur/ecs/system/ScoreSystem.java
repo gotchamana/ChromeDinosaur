@@ -143,6 +143,16 @@ public class ScoreSystem extends EntitySystem {
         return data.consumePixmap();
     }
 
+    public void setScoreBlinking(boolean blinking) {
+        this.blinking = blinking;
+
+        if (!blinking) {
+            var scoreEntity = getEngine().getEntitiesFor(scoreFamily).first();
+            var scoreComponent = scoreMapper.get(scoreEntity);
+            drawScore(scoreComponent.getHighScore(), scoreComponent.getCurrentScore());
+        }
+    }
+
     private static final class BlinkSetting {
         private boolean flag;
         private float aggregatedTime;

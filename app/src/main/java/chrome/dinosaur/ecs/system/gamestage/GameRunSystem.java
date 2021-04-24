@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.*;
 
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
+import chrome.dinosaur.ecs.system.ScoreSystem;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -126,6 +127,8 @@ public class GameRunSystem extends EntitySystem {
 
                 velocityFamily = Family.all(VelocityComponent.class).exclude(PlayerComponent.class).get();
                 getEngine().getEntitiesFor(velocityFamily).forEach(entity -> velocityMapper.get(entity).setX(0));
+
+                getEngine().getSystem(ScoreSystem.class).setScoreBlinking(false);
 
                 state = GameState.INIT_STAGE;
                 gameStageFinishedMapper.get(gameStageFinished).setFinished(true);
