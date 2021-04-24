@@ -68,7 +68,7 @@ public class GameStart extends GameStage {
             .add(new GameStageFinishedComponent(onFinished, false));
 
         var score = new Entity()
-            .add(new PositionComponent(WIDTH - DIGIT_WIDTH * 6f, HEIGHT - DIGIT_WIDTH * 2f, 2))
+            .add(new PositionComponent(WIDTH - DIGIT_WIDTH * 15f, HEIGHT - DIGIT_WIDTH * 2f, 2))
             .add(new ScoreComponent());
 
         engine.addEntity(floor);

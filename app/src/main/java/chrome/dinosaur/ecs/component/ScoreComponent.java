@@ -7,4 +7,5 @@ import lombok.*;
 @Data
 public class ScoreComponent implements Component {
     private int currentScore;
+    private int highScore;
 }

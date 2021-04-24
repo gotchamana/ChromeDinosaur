@@ -11,7 +11,6 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import chrome.dinosaur.ChromeDinosaur;
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
 
@@ -39,7 +38,7 @@ public class ScoreSystem extends EntitySystem {
 
         this.scoreFamily = Family.all(ScoreComponent.class).get();
         this.assets = assets;
-        this.scorePixmap = new Pixmap(DIGIT_WIDTH * 5, assets.get(ZERO_DIGIT).getRegionHeight(),
+        this.scorePixmap = new Pixmap(DIGIT_WIDTH * 14, assets.get(ZERO_DIGIT).getRegionHeight(),
             assets.get(ZERO_DIGIT).getTexture().getTextureData().getFormat());
         this.scoreTexture = new Texture(scorePixmap.getWidth(), scorePixmap.getHeight(), scorePixmap.getFormat());
     }
@@ -53,7 +52,7 @@ public class ScoreSystem extends EntitySystem {
 
         while (elapsedTime >= 0.1) {
             scoreComponent.setCurrentScore((scoreComponent.getCurrentScore() + 1) % 100000);
-            drawScore(String.format("%05d", scoreComponent.getCurrentScore()));
+            drawScore(scoreComponent.getHighScore(), scoreComponent.getCurrentScore());
 
             textureRegionComponent.getTextureRegion().setRegion(scoreTexture);
             scoreEntity.add(textureRegionComponent);
@@ -64,26 +63,42 @@ public class ScoreSystem extends EntitySystem {
         elapsedTime += deltaTime;
 	}
 
-    private void drawScore(String score) {
-        scorePixmap.setColor(Color.WHITE);
-        scorePixmap.fillRectangle(0, 0, scorePixmap.getWidth(), scorePixmap.getHeight());
+    private void drawScore(int highScore, int currentScore) {
+        scorePixmap.setColor(Color.CLEAR);
+        scorePixmap.fill();
 
         var pixmap = getDigitsPixmap();
-        drawScoreHelper(pixmap, 0, score);
+
+        final var format = "%05d";
+        if (highScore > 0)
+            drawHighScore(pixmap, String.format(format, highScore));
+        drawCurrentScore(pixmap, String.format(format, currentScore));
+
         pixmap.dispose();
 
         scoreTexture.draw(scorePixmap, 0, 0);
     }
 
-    private void drawScoreHelper(Pixmap pixmap, int index, String score) {
+    private void drawHighScore(Pixmap pixmap, String score) {
+        var textureRegion = assets.get(HIGH_SCORE);
+        scorePixmap.drawPixmap(pixmap, 0, 0, textureRegion.getRegionX(), textureRegion.getRegionY(),
+            textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+        drawScoreHelper(pixmap, 0, 3, score);
+    }
+
+    private void drawCurrentScore(Pixmap pixmap, String score) {
+        drawScoreHelper(pixmap, 0, 9, score);
+    }
+
+    private void drawScoreHelper(Pixmap pixmap, int index, int offset, String score) {
         if (index >= score.length()) return;
 
         var digit = score.charAt(index) - '0';
         var textureRegion = assets.get(DIGITS.get(digit));
-        scorePixmap.drawPixmap(pixmap, ChromeDinosaur.DIGIT_WIDTH * index, 0, textureRegion.getRegionX(), textureRegion.getRegionY(),
-            textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+        scorePixmap.drawPixmap(pixmap, DIGIT_WIDTH * (index + offset), 0, textureRegion.getRegionX(),
+            textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
 
-        drawScoreHelper(pixmap, index + 1, score);
+        drawScoreHelper(pixmap, index + 1, offset, score);
     }
 
     private Pixmap getDigitsPixmap() {
