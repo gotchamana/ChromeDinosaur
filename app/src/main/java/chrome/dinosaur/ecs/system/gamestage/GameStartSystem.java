@@ -36,6 +36,9 @@ public class GameStartSystem extends EntitySystem {
     ComponentMapper<PlayerComponent> playerMapper;
 
     @Inject
+    ComponentMapper<ScoreComponent> scoreMapper;
+
+    @Inject
     @Named("game-start-system.jump-velocity")
     float jumpVelocity;
 
@@ -89,6 +92,9 @@ public class GameStartSystem extends EntitySystem {
                 player.add(new AnimationComponent(animation));
                 velocityMapper.get(player).setX(1);
                 player.remove(TextureRegionComponent.class);
+
+                var score = getEngine().getEntitiesFor(Family.all(ScoreComponent.class).get()).first();
+                scoreMapper.get(score).setScore(0);
 
                 whiteBlock.getComponent(VelocityComponent.class).setX(20);
                 state = GameState.GAME_READY;

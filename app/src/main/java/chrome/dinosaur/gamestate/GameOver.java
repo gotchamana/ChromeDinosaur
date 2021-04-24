@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
+import chrome.dinosaur.ecs.system.ScoreSystem;
 import chrome.dinosaur.ecs.system.gamestage.*;
 
 public class GameOver extends GameStage {
@@ -66,6 +67,7 @@ public class GameOver extends GameStage {
         engine.removeEntity(restartBtn);
         engine.removeEntity(gameStageFinished);
 
+        engine.getSystem(ScoreSystem.class).setProcessing(true);
         engine.getSystem(GameRunSystem.class).setProcessing(true);
         engine.getSystem(GameOverSystem.class).setProcessing(false);
     }

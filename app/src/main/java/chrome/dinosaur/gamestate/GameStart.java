@@ -1,5 +1,6 @@
 package chrome.dinosaur.gamestate;
 
+import static chrome.dinosaur.ChromeDinosaur.*;
 import static chrome.dinosaur.ChromeDinosaur.Asset.*;
 
 import java.util.Map;
@@ -36,6 +37,9 @@ public class GameStart extends GameStage {
     ComponentMapper<GameStageFinishedComponent> gameStageFinishedMapper;
     
     @Inject
+    ComponentMapper<ScoreComponent> scoreMapper;
+
+    @Inject
     public GameStart() { }
 
     @Override
@@ -63,16 +67,21 @@ public class GameStart extends GameStage {
         var gameStageFinished = new Entity()
             .add(new GameStageFinishedComponent(onFinished, false));
 
+        var score = new Entity()
+            .add(new PositionComponent(WIDTH - DIGIT_WIDTH * 6f, HEIGHT - DIGIT_WIDTH * 2f, 2))
+            .add(new ScoreComponent());
+
         engine.addEntity(floor);
         engine.addEntity(dino);
         engine.addEntity(whiteBlock);
         engine.addEntity(gameStageFinished);
+        engine.addEntity(score);
     }
     
     @Override
     public void hide() {
         engine.getEntities().forEach(e -> {
-            if (!playerMapper.has(e))
+            if (!playerMapper.has(e) && !scoreMapper.has(e))
                 engine.removeEntity(e);
         });
 

@@ -43,6 +43,12 @@ public class SystemModule {
     }
 
     @Provides
+    @Named("score-system.priority")
+    public static int provideScoreSystemPriority() {
+        return 1;
+    }
+
+    @Provides
     @Named("game-state-finished-system.priority")
     public static int provideGameStateFinishedSystemPriority() {
         return 3;

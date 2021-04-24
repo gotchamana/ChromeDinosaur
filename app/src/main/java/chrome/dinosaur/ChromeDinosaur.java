@@ -18,6 +18,7 @@ public class ChromeDinosaur extends Game {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 300;
+    public static final int DIGIT_WIDTH = 20;
 
     public static final String TEXTURE_ATLAS_NAME = "sprite.atlas";
 
@@ -68,7 +69,8 @@ public class ChromeDinosaur extends Game {
     @AllArgsConstructor
     public enum Asset {
         WHITE_BLOCK, TITLE_DINO, JUMP_DINO, FLOOR1, FLOOR2, FLOOR3, WALK_DINO1, WALK_DINO2, CROUCH_WALK_DINO1,
-        CROUCH_WALK_DINO2, SHOCK_DINO, GAME_OVER, RESTART_BUTTON,
+        CROUCH_WALK_DINO2, SHOCK_DINO, GAME_OVER, RESTART_BUTTON, ZERO_DIGIT, ONE_DIGIT, TWO_DIGIT, THREE_DIGIT,
+        FOUR_DIGIT, FIVE_DIGIT, SIX_DIGIT, SEVEN_DIGIT, EIGHT_DIGIT, NINE_DIGIT, HIGH_SCORE,
         
         SMALL_CACTUS_ONE(new float[] { 2, 50, 7, 50, 10, 30, 12, 66, 16, 68, 21, 66, 24, 38, 26, 58, 31, 
             58, 31, 37, 22, 32, 20, 3, 12, 3, 12, 24, 2, 29 }),

@@ -72,4 +72,10 @@ public class ComponentMapperModule {
     public static ComponentMapper<ShapeComponent> provideShapeMapper() {
         return ComponentMapper.getFor(ShapeComponent.class);
     }
+
+    @Provides
+    @Singleton
+    public static ComponentMapper<ScoreComponent> provideScoreMapper() {
+        return ComponentMapper.getFor(ScoreComponent.class);
+    }
 }
