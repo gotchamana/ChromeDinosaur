@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.inject.*;
 
 import com.badlogic.ashley.core.*;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -19,6 +19,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class GameOverSystem extends EntitySystem {
     
+    @Inject
+    Preferences preferences;
+
     @Inject
     Map<Asset, TextureRegion> assets;
 
@@ -39,7 +42,6 @@ public class GameOverSystem extends EntitySystem {
 
     private Entity restartButton;
     private Entity gameStageFinished;
-    private Entity score;
 
     private GameState state = GameState.INIT_STAGE;
 
@@ -61,15 +63,25 @@ public class GameOverSystem extends EntitySystem {
             var gameSageFinishedFamily = Family.all(GameStageFinishedComponent.class).get();
             gameStageFinished = getEngine().getEntitiesFor(gameSageFinishedFamily).first();
 
-            Family scoreFamily = Family.all(ScoreComponent.class).get();
-            score = getEngine().getEntitiesFor(scoreFamily).first();
+            var scoreFamily = Family.all(ScoreComponent.class).get();
+            var score = getEngine().getEntitiesFor(scoreFamily).first();
+            var scoreComponent = scoreMapper.get(score);
+            updateHighScore(scoreComponent);
+            scoreComponent.setCurrentScore(0);
 
             state = GameState.GAME_RESTART;
         } else if (isRestartButtonClicked()) {
             log.debug("Restart button was clicked");
-            scoreMapper.get(score).setCurrentScore(0);
             state = GameState.INIT_STAGE;
             gameStageFinishedMapper.get(gameStageFinished).setFinished(true);
+        }
+    }
+
+    private void updateHighScore(ScoreComponent scoreComponent) {
+        if (scoreComponent.getCurrentScore() > preferences.getInteger("high.score", 0)) {
+            scoreComponent.setHighScore(scoreComponent.getCurrentScore());
+            preferences.putInteger("high.score", scoreComponent.getCurrentScore());
+            preferences.flush();
         }
     }
 

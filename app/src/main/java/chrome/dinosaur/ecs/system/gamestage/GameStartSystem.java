@@ -18,6 +18,9 @@ import chrome.dinosaur.ecs.component.*;
 public class GameStartSystem extends EntitySystem {
     
     @Inject
+    Preferences preferences;
+
+    @Inject
     Map<Asset, TextureRegion> assets;
 
     @Inject
@@ -94,7 +97,9 @@ public class GameStartSystem extends EntitySystem {
                 player.remove(TextureRegionComponent.class);
 
                 var score = getEngine().getEntitiesFor(Family.all(ScoreComponent.class).get()).first();
-                scoreMapper.get(score).setCurrentScore(0);
+                var scoreComponent = scoreMapper.get(score);
+                scoreComponent.setHighScore(preferences.getInteger("high.score", 0));
+                scoreComponent.setCurrentScore(0);
 
                 whiteBlock.getComponent(VelocityComponent.class).setX(20);
                 state = GameState.GAME_READY;
