@@ -34,8 +34,12 @@ public class GameOverSystem extends EntitySystem {
     @Inject
     ComponentMapper<GameStageFinishedComponent> gameStageFinishedMapper;
 
+    @Inject
+    ComponentMapper<ScoreComponent> scoreMapper;
+
     private Entity restartButton;
     private Entity gameStageFinished;
+    private Entity score;
 
     private GameState state = GameState.INIT_STAGE;
 
@@ -57,9 +61,13 @@ public class GameOverSystem extends EntitySystem {
             var gameSageFinishedFamily = Family.all(GameStageFinishedComponent.class).get();
             gameStageFinished = getEngine().getEntitiesFor(gameSageFinishedFamily).first();
 
+            Family scoreFamily = Family.all(ScoreComponent.class).get();
+            score = getEngine().getEntitiesFor(scoreFamily).first();
+
             state = GameState.GAME_RESTART;
         } else if (isRestartButtonClicked()) {
             log.debug("Restart button was clicked");
+            scoreMapper.get(score).setScore(0);
             state = GameState.INIT_STAGE;
             gameStageFinishedMapper.get(gameStageFinished).setFinished(true);
         }
