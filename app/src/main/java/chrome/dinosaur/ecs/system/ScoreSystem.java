@@ -52,8 +52,8 @@ public class ScoreSystem extends EntitySystem {
             new TextureRegionComponent(new TextureRegion()));
 
         while (elapsedTime >= 0.1) {
-            scoreComponent.setScore((scoreComponent.getScore() + 1) % 100000);
-            drawScore(String.format("%05d", scoreComponent.getScore()));
+            scoreComponent.setCurrentScore((scoreComponent.getCurrentScore() + 1) % 100000);
+            drawScore(String.format("%05d", scoreComponent.getCurrentScore()));
 
             textureRegionComponent.getTextureRegion().setRegion(scoreTexture);
             scoreEntity.add(textureRegionComponent);

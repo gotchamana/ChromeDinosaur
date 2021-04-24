@@ -67,7 +67,7 @@ public class GameOverSystem extends EntitySystem {
             state = GameState.GAME_RESTART;
         } else if (isRestartButtonClicked()) {
             log.debug("Restart button was clicked");
-            scoreMapper.get(score).setScore(0);
+            scoreMapper.get(score).setCurrentScore(0);
             state = GameState.INIT_STAGE;
             gameStageFinishedMapper.get(gameStageFinished).setFinished(true);
         }

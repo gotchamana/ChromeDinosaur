@@ -6,5 +6,5 @@ import lombok.*;
 
 @Data
 public class ScoreComponent implements Component {
-    private int score;
+    private int currentScore;
 }
