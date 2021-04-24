@@ -7,6 +7,7 @@ import java.util.*;
 import javax.inject.Singleton;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -25,6 +26,7 @@ public class AssetModule {
     public static AssetManager provideAssetManager() {
         var assetManager = new AssetManager();
         assetManager.load(TEXTURE_ATLAS_NAME, TextureAtlas.class);
+        assetManager.load(SCORE_SOUND_NAME, Sound.class);
         assetManager.finishLoading();
 
         return assetManager;
@@ -55,5 +57,11 @@ public class AssetModule {
             map.put(asset, textureAtlas.findRegion(asset.toString()));
 
         return Collections.unmodifiableMap(map);
+    }
+
+    @Provides
+    @Singleton
+    public static Sound provideScoreSound(AssetManager manager) {
+        return manager.get(SCORE_SOUND_NAME, Sound.class);
     }
 }

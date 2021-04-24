@@ -21,6 +21,7 @@ public class ChromeDinosaur extends Game {
     public static final int DIGIT_WIDTH = 20;
 
     public static final String TEXTURE_ATLAS_NAME = "sprite.atlas";
+    public static final String SCORE_SOUND_NAME = "score.ogg";
 
     @Inject
     AssetManager assetManager;

@@ -8,6 +8,7 @@ import java.util.*;
 import javax.inject.*;
 
 import com.badlogic.ashley.core.*;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -18,6 +19,9 @@ public class ScoreSystem extends EntitySystem {
     
     private static final List<Asset> DIGITS = List.of(ZERO_DIGIT, ONE_DIGIT, TWO_DIGIT, THREE_DIGIT, FOUR_DIGIT,
         FIVE_DIGIT, SIX_DIGIT, SEVEN_DIGIT, EIGHT_DIGIT, NINE_DIGIT);
+
+    @Inject
+    Sound scoreSound;
 
     @Inject
     ComponentMapper<ScoreComponent> scoreMapper;
@@ -70,6 +74,7 @@ public class ScoreSystem extends EntitySystem {
     private void drawScore(int highScore, int currentScore) {
         if (currentScore > 0 && currentScore % 100 == 0) {
             blinking = true;
+            scoreSound.play();
             resetBlinkSetting(currentScore);
         }
 
