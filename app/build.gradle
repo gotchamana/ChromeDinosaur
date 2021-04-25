@@ -2,6 +2,7 @@ plugins {
     id 'application'
     id 'io.freefair.lombok' version '5.1.0'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'org.beryx.runtime' version '1.12.4'
 }
 
 repositories {
@@ -48,6 +49,12 @@ run {
 
 test {
     useJUnitPlatform()
+}
+
+runtime {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    modules = ['java.base', 'java.compiler', 'java.datatransfer', 'java.desktop', 'java.logging', 'java.management',
+        'java.naming', 'java.rmi', 'java.scripting', 'java.sql', 'java.xml', 'jdk.unsupported']
 }
 
 shadowJar {
