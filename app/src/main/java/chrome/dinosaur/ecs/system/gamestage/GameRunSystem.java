@@ -105,7 +105,8 @@ public class GameRunSystem extends EntitySystem {
                     new TextureRegionComponent(assets.get(JUMP_DINO)));
 
                 var velocityFamily = Family.all(VelocityComponent.class).exclude(PlayerComponent.class).get();
-                getEngine().getEntitiesFor(velocityFamily).forEach(entity -> velocityMapper.get(entity).setX(-10));
+                getEngine().getEntitiesFor(velocityFamily)
+                    .forEach(entity -> velocityMapper.get(entity).setX(INITIAL_VELOCITY));
 
                 state = GameState.GAME_RUN;
                 break;

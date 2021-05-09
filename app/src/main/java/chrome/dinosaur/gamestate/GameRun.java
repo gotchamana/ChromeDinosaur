@@ -1,7 +1,7 @@
 package chrome.dinosaur.gamestate;
 
 import static chrome.dinosaur.ChromeDinosaur.Asset.*;
-import static chrome.dinosaur.config.Config.WIDTH;
+import static chrome.dinosaur.config.Config.*;
 
 import java.util.Map;
 
@@ -41,20 +41,20 @@ public class GameRun extends GameStage {
     public void show() {
         var floor1 = new Entity()
             .add(new PositionComponent(0, 0, 0))
-            .add(new VelocityComponent(-10, 0))
+            .add(new VelocityComponent(INITIAL_VELOCITY, 0))
             .add(new FloorComponent())
             .add(new TextureRegionComponent(assets.get(FLOOR1)));
 
         var floor2 = new Entity()
             .add(new PositionComponent(WIDTH, 0, 0))
-            .add(new VelocityComponent(-10, 0))
+            .add(new VelocityComponent(INITIAL_VELOCITY, 0))
             .add(new FloorComponent())
             .add(new TextureRegionComponent(assets.get(FLOOR1)));
 
         var obstacleAsset = getRandomObstacleAsset();
         var obstacle1 = new Entity()
             .add(new PositionComponent(WIDTH * 3f, 0, 1))
-            .add(new VelocityComponent(-10, 0))
+            .add(new VelocityComponent(INITIAL_VELOCITY, 0))
             .add(new ShapeComponent(obstacleAsset.getShape()))
             .add(new ObstacleComponent())
             .add(new TextureRegionComponent(assets.get(obstacleAsset)));
@@ -62,7 +62,7 @@ public class GameRun extends GameStage {
         obstacleAsset = getRandomObstacleAsset();
         var obstacle2 = new Entity()
             .add(new PositionComponent(WIDTH * 4f, 0, 1))
-            .add(new VelocityComponent(-10, 0))
+            .add(new VelocityComponent(INITIAL_VELOCITY, 0))
             .add(new ShapeComponent(obstacleAsset.getShape()))
             .add(new ObstacleComponent())
             .add(new TextureRegionComponent(assets.get(obstacleAsset)));

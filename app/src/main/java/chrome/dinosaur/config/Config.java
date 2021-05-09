@@ -11,6 +11,7 @@ public class Config {
 
     public static final float GRAVITY = -1f;
     public static final float JUMP_VELOCITY = 20f;
+    public static final float INITIAL_VELOCITY = -10f;
 
     private Config() {}
 }
