@@ -55,8 +55,6 @@ public class GameRunSystem extends EntitySystem {
     @Inject
     ComponentMapper<ShapeComponent> shapeMapper;
 
-    float jumpVelocity = JUMP_VELOCITY;
-
     private ImmutableArray<Entity> floors;
     private ImmutableArray<Entity> obstacles;
 
@@ -143,7 +141,7 @@ public class GameRunSystem extends EntitySystem {
             player.add(new JumpComponent(position.getY()));
 
             var velocity = velocityMapper.get(player);
-            velocity.setY(jumpVelocity);
+            velocity.setY(JUMP_VELOCITY);
 
             player.add(playerJumpTextureRegionComponent);
             player.remove(AnimationComponent.class);

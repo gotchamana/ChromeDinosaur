@@ -41,8 +41,6 @@ public class GameStartSystem extends EntitySystem {
     @Inject
     ComponentMapper<ScoreComponent> scoreMapper;
 
-    float jumpVelocity = JUMP_VELOCITY;
-
     private Entity player;
     private Entity whiteBlock;
     private Entity gameStateFinished;
@@ -77,7 +75,7 @@ public class GameStartSystem extends EntitySystem {
                     var velocity = velocityMapper.get(player);
 
                     player.add(new JumpComponent(position.getY()));
-                    velocity.setY(jumpVelocity);
+                    velocity.setY(JUMP_VELOCITY);
                     state = GameState.PLAYER_JUMPED;
                 }
                 break;

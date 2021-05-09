@@ -2,8 +2,6 @@ package chrome.dinosaur.di.module;
 
 import javax.inject.Named;
 
-import com.badlogic.gdx.Preferences;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -13,21 +11,9 @@ public class SystemModule {
     private SystemModule() {}
 
     @Provides
-    @Named("movement-system.gravity")
-    public static float provideMovementSystemGravity(Preferences preferences) {
-        return preferences.getFloat("gravity");
-    }
-
-    @Provides
     @Named("movement-system.priority")
     public static int provideMovementSystemPriority() {
         return 0;
-    }
-
-    @Provides
-    @Named("game-start-system.jump-velocity")
-    public static float provideGameStartSystemJumpVelocity(Preferences preferences) {
-        return preferences.getFloat("jump.velocity");
     }
 
     @Provides

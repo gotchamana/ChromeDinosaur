@@ -25,12 +25,9 @@ public class MovementSystem extends IteratingSystem {
     @Inject
     ComponentMapper<ShapeComponent> shapeMapper;
 
-    private float gravity;
-    
     @Inject
     public MovementSystem(@Named("movement-system.priority") int priority) {
         super(Family.all(PositionComponent.class, VelocityComponent.class).get(), priority);
-        this.gravity = GRAVITY;
     }
 
     @Override
@@ -52,7 +49,7 @@ public class MovementSystem extends IteratingSystem {
             position.setY(jump.getOrigPositionY());
             velocity.setY(0);
         } else {
-            velocity.setY(velocity.getY() + gravity);
+            velocity.setY(velocity.getY() + GRAVITY);
         }
     }
 }
