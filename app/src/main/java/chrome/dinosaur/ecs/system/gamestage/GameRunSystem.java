@@ -1,7 +1,7 @@
 package chrome.dinosaur.ecs.system.gamestage;
 
 import static chrome.dinosaur.ChromeDinosaur.Asset.*;
-import static chrome.dinosaur.config.Config.WIDTH;
+import static chrome.dinosaur.config.Config.*;
 
 import java.util.*;
 
@@ -55,9 +55,7 @@ public class GameRunSystem extends EntitySystem {
     @Inject
     ComponentMapper<ShapeComponent> shapeMapper;
 
-    @Inject
-    @Named("game-start-system.jump-velocity")
-    float jumpVelocity;
+    float jumpVelocity = JUMP_VELOCITY;
 
     private ImmutableArray<Entity> floors;
     private ImmutableArray<Entity> obstacles;

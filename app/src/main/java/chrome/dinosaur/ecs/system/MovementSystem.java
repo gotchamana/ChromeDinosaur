@@ -1,5 +1,7 @@
 package chrome.dinosaur.ecs.system;
 
+import static chrome.dinosaur.config.Config.GRAVITY;
+
 import java.util.Optional;
 
 import javax.inject.*;
@@ -26,11 +28,9 @@ public class MovementSystem extends IteratingSystem {
     private float gravity;
     
     @Inject
-    public MovementSystem(@Named("movement-system.gravity") float gravity,
-        @Named("movement-system.priority") int priority) {
-
+    public MovementSystem(@Named("movement-system.priority") int priority) {
         super(Family.all(PositionComponent.class, VelocityComponent.class).get(), priority);
-        this.gravity = gravity;
+        this.gravity = GRAVITY;
     }
 
     @Override
