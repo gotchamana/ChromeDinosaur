@@ -11,11 +11,12 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Disposable;
 
 import chrome.dinosaur.ChromeDinosaur.Asset;
 import chrome.dinosaur.ecs.component.*;
 
-public class ScoreSystem extends EntitySystem {
+public class ScoreSystem extends EntitySystem implements Disposable {
     
     private static final List<Asset> DIGITS = List.of(ZERO_DIGIT, ONE_DIGIT, TWO_DIGIT, THREE_DIGIT, FOUR_DIGIT,
         FIVE_DIGIT, SIX_DIGIT, SEVEN_DIGIT, EIGHT_DIGIT, NINE_DIGIT);
@@ -156,6 +157,12 @@ public class ScoreSystem extends EntitySystem {
             var scoreComponent = scoreMapper.get(scoreEntity);
             drawScore(scoreComponent.getHighScore(), scoreComponent.getCurrentScore());
         }
+    }
+
+    @Override
+    public void dispose() {
+        scorePixmap.dispose();
+        scoreTexture.dispose();
     }
 
     private static final class BlinkSetting {

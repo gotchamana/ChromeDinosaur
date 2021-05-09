@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
 
 import chrome.dinosaur.di.component.DaggerGameComponent;
+import chrome.dinosaur.ecs.system.ScoreSystem;
 import chrome.dinosaur.gamestate.*;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
@@ -33,6 +34,9 @@ public class ChromeDinosaur extends Game {
     @Inject
     GameOver gameOver;
 
+    @Inject
+    ScoreSystem scoreSystem;
+
     @Override
     public void create() {
         DaggerGameComponent.create().chromeDinosaur(this);
@@ -45,7 +49,10 @@ public class ChromeDinosaur extends Game {
 
     @Override
     public void dispose() {
-        screen.dispose();
+        gameStart.dispose();
+        gameRun.dispose();
+        gameOver.dispose();
+        scoreSystem.dispose();
         assetManager.dispose();
         batch.dispose();
     }
