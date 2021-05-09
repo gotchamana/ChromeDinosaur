@@ -1,7 +1,7 @@
 package chrome.dinosaur.ecs.system;
 
-import static chrome.dinosaur.ChromeDinosaur.DIGIT_WIDTH;
 import static chrome.dinosaur.ChromeDinosaur.Asset.*;
+import static chrome.dinosaur.config.Config.DIGIT_WIDTH;
 
 import java.util.*;
 

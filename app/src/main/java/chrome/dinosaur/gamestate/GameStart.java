@@ -1,7 +1,7 @@
 package chrome.dinosaur.gamestate;
 
-import static chrome.dinosaur.ChromeDinosaur.*;
 import static chrome.dinosaur.ChromeDinosaur.Asset.*;
+import static chrome.dinosaur.config.Config.*;
 
 import java.util.Map;
 

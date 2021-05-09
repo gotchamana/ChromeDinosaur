@@ -1,7 +1,7 @@
 package chrome.dinosaur.ecs.system.gamestage;
 
-import static chrome.dinosaur.ChromeDinosaur.HEIGHT;
 import static chrome.dinosaur.ChromeDinosaur.Asset.SHOCK_DINO;
+import static chrome.dinosaur.config.Config.HEIGHT;
 
 import java.util.Map;
 

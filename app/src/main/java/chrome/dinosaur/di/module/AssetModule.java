@@ -1,6 +1,6 @@
 package chrome.dinosaur.di.module;
 
-import static chrome.dinosaur.ChromeDinosaur.*;
+import static chrome.dinosaur.config.Config.*;
 
 import java.util.*;
 

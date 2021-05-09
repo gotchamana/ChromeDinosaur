@@ -1,5 +1,7 @@
 package chrome.dinosaur;
 
+import static chrome.dinosaur.config.Config.*;
+
 import javax.inject.Inject;
 
 import com.badlogic.gdx.Game;
@@ -15,13 +17,6 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class ChromeDinosaur extends Game {
-
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 300;
-    public static final int DIGIT_WIDTH = 20;
-
-    public static final String TEXTURE_ATLAS_NAME = "sprite.atlas";
-    public static final String SCORE_SOUND_NAME = "score.ogg";
 
     @Inject
     AssetManager assetManager;
