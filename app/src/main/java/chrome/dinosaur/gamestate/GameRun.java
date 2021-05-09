@@ -51,6 +51,26 @@ public class GameRun extends GameStage {
             .add(new FloorComponent())
             .add(new TextureRegionComponent(assets.get(FLOOR1)));
 
+        var cloud1 = new Entity()
+            .add(new PositionComponent(WIDTH, CLOUD_Y.get(MathUtils.random(0, CLOUD_Y.size() - 1)), 0))
+            .add(new VelocityComponent(CLOUD_VELOCITY, 0))
+            .add(new CloudComponent())
+            .add(new TextureRegionComponent(assets.get(CLOUD)));
+
+        var cloud2 = new Entity()
+            .add(new PositionComponent(WIDTH + MathUtils.random(CLOUD_MIN_SPACE, CLOUD_MAX_SPACE) * 1f,
+                CLOUD_Y.get(MathUtils.random(0, CLOUD_Y.size() - 1)), 0))
+            .add(new VelocityComponent(CLOUD_VELOCITY, 0))
+            .add(new CloudComponent())
+            .add(new TextureRegionComponent(assets.get(CLOUD)));
+
+        var cloud3 = new Entity()
+            .add(new PositionComponent(WIDTH + MathUtils.random(CLOUD_MIN_SPACE, CLOUD_MAX_SPACE) * 2f,
+                CLOUD_Y.get(MathUtils.random(0, CLOUD_Y.size() - 1)), 0))
+            .add(new VelocityComponent(CLOUD_VELOCITY, 0))
+            .add(new CloudComponent())
+            .add(new TextureRegionComponent(assets.get(CLOUD)));
+
         var obstacleAsset = getRandomObstacleAsset();
         var obstacle1 = new Entity()
             .add(new PositionComponent(WIDTH * 3f, 0, 1))
@@ -72,6 +92,9 @@ public class GameRun extends GameStage {
 
         engine.addEntity(floor1);
         engine.addEntity(floor2);
+        engine.addEntity(cloud1);
+        engine.addEntity(cloud2);
+        engine.addEntity(cloud3);
         engine.addEntity(obstacle1);
         engine.addEntity(obstacle2);
         engine.addEntity(gameStageFinished);

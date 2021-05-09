@@ -1,5 +1,7 @@
 package chrome.dinosaur.config;
 
+import java.util.List;
+
 public class Config {
     
     public static final int WIDTH = 800;
@@ -12,6 +14,12 @@ public class Config {
     public static final float GRAVITY = -1f;
     public static final float JUMP_VELOCITY = 20f;
     public static final float INITIAL_VELOCITY = -10f;
+    public static final float CLOUD_VELOCITY = -5f;
+
+    public static final int CLOUD_MIN_SPACE = 150;
+    public static final int CLOUD_MAX_SPACE = WIDTH - 100;
+
+    public static final List<Float> CLOUD_Y = List.of(110f, 130f, 150f, 170f, 190f);
 
     private Config() {}
 }

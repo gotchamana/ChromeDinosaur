@@ -2,8 +2,10 @@ package chrome.dinosaur.ecs.system.gamestage;
 
 import static chrome.dinosaur.ChromeDinosaur.Asset.*;
 import static chrome.dinosaur.config.Config.*;
+import static java.util.stream.Collectors.toUnmodifiableList;
 
 import java.util.*;
+import java.util.stream.*;
 
 import javax.inject.*;
 
@@ -56,6 +58,7 @@ public class GameRunSystem extends EntitySystem {
     ComponentMapper<ShapeComponent> shapeMapper;
 
     private ImmutableArray<Entity> floors;
+    private ImmutableArray<Entity> clouds;
     private ImmutableArray<Entity> obstacles;
 
     private Entity player;
@@ -64,6 +67,8 @@ public class GameRunSystem extends EntitySystem {
     private Component playerWalkAnimationComponent;
     private Component playerCrouchWalkAnimationComponent;
     private Component playerJumpTextureRegionComponent;
+
+    private List<PositionComponent> cloudPositionComponents = List.of();
 
     private GameState state = GameState.INIT_STAGE;
 
@@ -78,6 +83,12 @@ public class GameRunSystem extends EntitySystem {
             case INIT_STAGE:
                 var floorFamily = Family.all(FloorComponent.class).get();
                 floors = getEngine().getEntitiesFor(floorFamily);
+
+                var cloudFamily = Family.all(CloudComponent.class).get();
+                clouds = getEngine().getEntitiesFor(cloudFamily);
+                IntStream.range(0, cloudPositionComponents.size())
+                    .mapToObj(i -> new AbstractMap.SimpleEntry<>(clouds.get(i), cloudPositionComponents.get(i)))
+                    .forEach(entry -> entry.getKey().add(entry.getValue()));
 
                 var obstacleFamily = Family.all(ObstacleComponent.class).get();
                 obstacles = getEngine().getEntitiesFor(obstacleFamily);
@@ -125,6 +136,11 @@ public class GameRunSystem extends EntitySystem {
                 velocityFamily = Family.all(VelocityComponent.class).exclude(PlayerComponent.class).get();
                 getEngine().getEntitiesFor(velocityFamily).forEach(entity -> velocityMapper.get(entity).setX(0));
 
+                if (cloudPositionComponents.isEmpty())
+                    cloudPositionComponents = StreamSupport.stream(clouds.spliterator(), false)
+                        .map(positionMapper::get)
+                        .collect(toUnmodifiableList());
+
                 getEngine().getSystem(ScoreSystem.class).setScoreBlinking(false);
 
                 state = GameState.INIT_STAGE;
@@ -133,6 +149,7 @@ public class GameRunSystem extends EntitySystem {
         }
 
         resetInvisibleFloor();
+        resetInvisibleCloud();
         resetInvisibleObstacle();
     }
 
@@ -214,11 +231,32 @@ public class GameRunSystem extends EntitySystem {
         return floorTextures[0];
     }
 
+    private void resetInvisibleCloud() {
+        var newCloudX = Math.max(WIDTH, getFarthestCloudX() + MathUtils.random(CLOUD_MIN_SPACE, CLOUD_MAX_SPACE));
+
+        clouds.forEach(cloud -> {
+            var position = positionMapper.get(cloud);
+            var textureRegionComponent = textureRegionMapper.get(cloud);
+            if (!isTextureRegionInvisible(position, textureRegionComponent)) return;
+
+            position.setX(newCloudX);
+            position.setY(CLOUD_Y.get(MathUtils.random(0, CLOUD_Y.size() - 1)));
+        });
+    }
+
+    private float getFarthestCloudX() {
+        return (float) StreamSupport.stream(clouds.spliterator(), false)
+            .map(positionMapper::get)
+            .mapToDouble(PositionComponent::getX)
+            .max()
+            .orElseThrow();
+    }
+
     private void resetInvisibleObstacle() {
         obstacles.forEach(obstacle -> {
             var position = positionMapper.get(obstacle);
             var textureRegionComponent = textureRegionMapper.get(obstacle);
-            if (!isObstacleInvisible(position, textureRegionComponent)) return;
+            if (!isTextureRegionInvisible(position, textureRegionComponent)) return;
             
             position.setX(WIDTH * 2f);
 
@@ -231,7 +269,7 @@ public class GameRunSystem extends EntitySystem {
         });
     }
 
-    private boolean isObstacleInvisible(PositionComponent position, TextureRegionComponent textureRegionComponent) {
+    private boolean isTextureRegionInvisible(PositionComponent position, TextureRegionComponent textureRegionComponent) {
         return position.getX() + textureRegionComponent.getTextureRegion().getRegionWidth() <= 0;
     }
 

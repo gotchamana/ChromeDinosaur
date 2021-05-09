@@ -60,7 +60,7 @@ public class GameOver extends GameStage {
 
     @Override
     public void hide() {
-        engine.getEntitiesFor(Family.one(FloorComponent.class, ObstacleComponent.class).get())
+        engine.getEntitiesFor(Family.one(FloorComponent.class, ObstacleComponent.class, CloudComponent.class).get())
             .forEach(engine::removeEntity);
 
         engine.removeEntity(gameOver);
