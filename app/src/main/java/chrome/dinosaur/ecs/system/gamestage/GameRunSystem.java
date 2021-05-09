@@ -104,7 +104,7 @@ public class GameRunSystem extends EntitySystem {
                 playerJumpTextureRegionComponent = Objects.requireNonNullElse(playerJumpTextureRegionComponent,
                     new TextureRegionComponent(assets.get(JUMP_DINO)));
 
-                var velocityFamily = Family.all(VelocityComponent.class).exclude(PlayerComponent.class).get();
+                var velocityFamily = Family.one(FloorComponent.class, ObstacleComponent.class).get();
                 getEngine().getEntitiesFor(velocityFamily)
                     .forEach(entity -> velocityMapper.get(entity).setX(INITIAL_VELOCITY));
 
